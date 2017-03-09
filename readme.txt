@@ -66,6 +66,8 @@ if ( is_a( $api, 'Zao\WP_API\OAuth1\Connect' ) ) {
 
 = 0.2.6 =
 * Update the wp-api-connect dependency to Remove Ryan McCue's Requests library from composer since it now exists in WP core.
+* Rename plugin
+* Add a toggle for the "Optional Headers" section.
 
 = 0.2.5 =
 * Update the wp-api-connect dependency to fix a typo from a variable which should be using an object property (for legacy mode).
