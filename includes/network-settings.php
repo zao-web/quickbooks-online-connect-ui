@@ -1,11 +1,11 @@
 <?php
 /**
- * WDS WP REST API Connect UI Network Settings
+ * WP API Connect UI Network Settings
  * @version 0.1.0
- * @package WDS WP REST API Connect UI
+ * @package WP API Connect UI
  */
 
-class WDSRESTCUI_Network_Settings extends WDSRESTCUI_Settings {
+class ZAPIC_Network_Settings extends ZAPIC_Settings {
 
 	/**
 	 * Which admin menu hook to use for displaying the options page

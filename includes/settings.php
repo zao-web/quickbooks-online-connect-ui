@@ -1,13 +1,13 @@
 <?php
 
-use WDS_WP_REST_API\OAuth1\Connect;
+use Zao\WP_API\OAuth1\Connect;
 
 /**
- * WDS WP REST API Connect UI Settings
+ * WP API Connect UI Settings
  * @version 0.1.0
- * @package WDS WP REST API Connect UI
+ * @package WP API Connect UI
  */
-class WDSRESTCUI_Settings {
+class ZAPIC_Settings {
 
 	/**
 	 * Option key, and option page slug
@@ -15,7 +15,7 @@ class WDSRESTCUI_Settings {
 	 * @var    string
 	 * @since  0.1.0
 	 */
-	protected $key = 'wds_rest_connect_ui_settings';
+	protected $key = 'wp_api_connect_ui_settings';
 
 	/**
 	 * Options page metabox id
@@ -23,7 +23,7 @@ class WDSRESTCUI_Settings {
 	 * @var    string
 	 * @since  0.1.0
 	 */
-	protected $metabox_id = 'wds_rest_connect_ui_settings_metabox';
+	protected $metabox_id = 'wp_api_connect_ui_settings_metabox';
 
 	/**
 	 * Options Page title
@@ -72,7 +72,7 @@ class WDSRESTCUI_Settings {
 	public function __construct( $plugin_basename, Connect $api ) {
 		$this->plugin_action_links_hook .= $plugin_basename;
 		$this->api   = $api;
-		$this->title = __( 'WP REST API Connect', 'wds-rest-connect-ui' );
+		$this->title = __( 'WP REST API Connect', 'wp-api-connect-ui' );
 	}
 
 	/**
@@ -140,7 +140,7 @@ class WDSRESTCUI_Settings {
 	 * @return array         Modified array of links
 	 */
 	public function settings_link( $links ) {
-		$setting_link = sprintf( '<a href="%s">%s</a>', $this->settings_url(), __( 'Settings', 'wds-rest-connect-ui' ) );
+		$setting_link = sprintf( '<a href="%s">%s</a>', $this->settings_url(), __( 'Settings', 'wp-api-connect-ui' ) );
 		array_unshift( $links, $setting_link );
 
 		return $links;
@@ -155,7 +155,7 @@ class WDSRESTCUI_Settings {
 	public function admin_page_display() {
 		$args = array();
 		if ( $this->get( 'api_url' ) && ! $this->get( 'consumer_key' ) ) {
-			$args['save_button'] = __( 'Begin Authorization', 'wds-rest-connect-ui' );
+			$args['save_button'] = __( 'Begin Authorization', 'wp-api-connect-ui' );
 		}
 		?>
 		<div class="wrap cmb2-options-page <?php echo $this->key; ?>">
@@ -248,8 +248,8 @@ class WDSRESTCUI_Settings {
 		}
 
 		$args = array(
-			'name' => __( 'WordPress Site URL', 'wds-rest-connect-ui' ),
-			'desc' => sprintf( __( 'Site must have the %s and %s plugins installed.', 'wds-rest-connect-ui' ), '<a target="_blank" href="https://github.com/WP-API/WP-API">WP-API</a>', '<a target="_blank" href="https://github.com/WP-API/OAuth1">OAuth1</a>' ),
+			'name' => __( 'WordPress Site URL', 'wp-api-connect-ui' ),
+			'desc' => sprintf( __( 'Site must have the %s and %s plugins installed.', 'wp-api-connect-ui' ), '<a target="_blank" href="https://github.com/WP-API/WP-API">WP-API</a>', '<a target="_blank" href="https://github.com/WP-API/OAuth1">OAuth1</a>' ),
 			'id'   => 'url',
 			'type' => 'text_url',
 			'attributes' => array(
@@ -258,10 +258,10 @@ class WDSRESTCUI_Settings {
 		);
 
 		if ( empty( $url ) || empty( $api_url ) ) {
-			$args['before_row'] = '<h3>' . __( 'Step 1: Find the API', 'wds-rest-connect-ui' ) . '</h3>';
-			$args['name'] = __( 'Enter WordPress Site URL to start discovery', 'wds-rest-connect-ui' );
+			$args['before_row'] = '<h3>' . __( 'Step 1: Find the API', 'wp-api-connect-ui' ) . '</h3>';
+			$args['name'] = __( 'Enter WordPress Site URL to start discovery', 'wp-api-connect-ui' );
 		} elseif ( empty( $key ) ) {
-			$args['before_row'] = '<h3>' . __( 'Step 2: Input Credentials', 'wds-rest-connect-ui' ) . '</h3>';
+			$args['before_row'] = '<h3>' . __( 'Step 2: Input Credentials', 'wp-api-connect-ui' ) . '</h3>';
 		}
 
 		$cmb->add_field( $args );
@@ -274,8 +274,8 @@ class WDSRESTCUI_Settings {
 		// No URL? then wait...
 		if ( ! empty( $url ) && ! empty( $api_url ) ) {
 			$cmb->add_field( array(
-				'name'       => __( 'Client Key', 'wds-rest-connect-ui' ),
-				'before_row' => '<p class="description"><a target="_blank" href="'. trailingslashit( $url ) .'wp-admin/users.php?page=rest-oauth1-apps">' . __( 'Manage registered applications', 'wds-rest-connect-ui' ) . '</a> or <a target="_blank" href="https://github.com/WP-API/client-cli#step-1-creating-a-consumer">' . __( 'learn how to get client credentials via WPCLI', 'wds-rest-connect-ui' ) . '</a>.</p><p >' . __( 'The application callback URL for the application registration needs to be: ', 'wds-rest-connect-ui' ) . '<br><code>' . $this->settings_url() . '</code></p>',
+				'name'       => __( 'Client Key', 'wp-api-connect-ui' ),
+				'before_row' => '<p>' . __( 'If you haven\'t yet, you will need to <a target="_blank" href="'. trailingslashit( $url ) .'wp-admin/users.php?page=rest-oauth1-apps">register a new Application</a> on this site.', 'wp-api-connect-ui' ) . '</p><p>' . __( 'The application callback URL for the application registration needs to be: ', 'wp-api-connect-ui' ) . '<br><code>' . $this->settings_url() . '</code></p><p class="description"><a target="_blank" href="'. trailingslashit( $url ) .'wp-admin/users.php?page=rest-oauth1-apps">' . __( 'Manage registered applications', 'wp-api-connect-ui' ) . '</a> or <a target="_blank" href="https://github.com/WP-API/client-cli#step-1-creating-a-consumer">' . __( 'learn how to get client credentials via WPCLI', 'wp-api-connect-ui' ) . '</a>.</p>',
 				'id'         => 'consumer_key',
 				'type'       => 'text',
 				'attributes' => array(
@@ -284,7 +284,7 @@ class WDSRESTCUI_Settings {
 			) );
 
 			$cmb->add_field( array(
-				'name' => __( 'Client Secret', 'wds-rest-connect-ui' ),
+				'name' => __( 'Client Secret', 'wp-api-connect-ui' ),
 				'id'   => 'consumer_secret',
 				'type' => 'text',
 				'attributes' => array(
@@ -294,20 +294,20 @@ class WDSRESTCUI_Settings {
 		}
 
 		$cmb->add_field( array(
-			'name' => __( 'Optional Headers', 'wds-rest-connect-ui' ),
-			'desc' => __( 'If the WordPress API requires a Header Key/Token for access, i.e. <a href="https://github.com/WebDevStudios/WDS-Allow-REST-API">WDS Allow REST API</a>.', 'wds-rest-connect-ui' ),
+			'name' => __( 'Optional Headers', 'wp-api-connect-ui' ),
+			'desc' => __( 'If the WordPress API requires a Header Key/Token for access, i.e. <a href="https://github.com/WebDevStudios/WDS-Allow-REST-API">WDS Allow REST API</a>.', 'wp-api-connect-ui' ),
 			'id'   => 'header_title',
 			'type' => 'title',
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Header Key', 'wds-rest-connect-ui' ),
+			'name' => __( 'Header Key', 'wp-api-connect-ui' ),
 			'id'   => 'header_key',
 			'type' => 'text',
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Header Token', 'wds-rest-connect-ui' ),
+			'name' => __( 'Header Token', 'wp-api-connect-ui' ),
 			'id'   => 'header_token',
 			'type' => 'text',
 		) );
@@ -421,7 +421,7 @@ class WDSRESTCUI_Settings {
 		}
 
 		// Setup our save notice
-		$this->register_notice( __( 'Settings updated.', 'wds-rest-connect-ui' ), false, '' );
+		$this->register_notice( __( 'Settings updated.', 'wp-api-connect-ui' ), false, '' );
 		$this->output_notices();
 
 		// Delete stored errors
@@ -586,7 +586,7 @@ class WDSRESTCUI_Settings {
 		<h4>'. $errors['message'] .'</h4>
 		<xmp>request args: '. print_r( $errors['request_args'], true ) .'</xmp>
 		<xmp>request response: '. print_r( $errors['request_response'], true ) .'</xmp>
-		<p><a class="button-secondary" href="'. add_query_arg( 'dismiss_errrors', 1 ) .'">' . __( 'Dismiss Errors', 'wds-rest-connect-ui' ) . '</a></p>
+		<p><a class="button-secondary" href="'. add_query_arg( 'dismiss_errrors', 1 ) .'">' . __( 'Dismiss Errors', 'wp-api-connect-ui' ) . '</a></p>
 		';
 		$this->register_notice( $message );
 
@@ -606,24 +606,24 @@ class WDSRESTCUI_Settings {
 		<table class="wp-list-table widefat user-card">
 			<thead>
 				<tr>
-					<th>' . __( 'Authenticated User', 'wds-rest-connect-ui' ) . '</th>
-					<th>' . __( 'Details', 'wds-rest-connect-ui' ) . '</th>
-					<th>' . __( 'Description', 'wds-rest-connect-ui' ) . '</th>
+					<th>' . __( 'Authenticated User', 'wp-api-connect-ui' ) . '</th>
+					<th>' . __( 'Details', 'wp-api-connect-ui' ) . '</th>
+					<th>' . __( 'Description', 'wp-api-connect-ui' ) . '</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
 					<td>
 						<div class="avatar"><img src="' . esc_attr( $user->imageUrl ) .'" /></div>
-						<p>' . esc_attr( $user->name ) .' (<code>' . esc_attr( $user->nickname ) .'</code>) <a href="' . esc_attr( $user->urls['permalink'] ) .'" target="_blank">' . __( 'View posts', 'wds-rest-connect-ui' ) . '</a></p>
+						<p>' . esc_attr( $user->name ) .' (<code>' . esc_attr( $user->nickname ) .'</code>) <a href="' . esc_attr( $user->urls['permalink'] ) .'" target="_blank">' . __( 'View posts', 'wp-api-connect-ui' ) . '</a></p>
 					</td>
 					<td>
 						<dl>
-							<dt>' . __( 'First Name', 'wds-rest-connect-ui' ) . '</dt>
+							<dt>' . __( 'First Name', 'wp-api-connect-ui' ) . '</dt>
 							<dd>' . ( ! empty( $user->firstName ) ? esc_attr( $user->firstName ) : '' ) .'</dd>
-							<dt>' . __( 'Last Name', 'wds-rest-connect-ui' ) . '</dt>
+							<dt>' . __( 'Last Name', 'wp-api-connect-ui' ) . '</dt>
 							<dd>' . ( ! empty( $user->lastName ) ? esc_attr( $user->lastName ) : '' ) .'</dd>
-							<dt>' . __( 'Email', 'wds-rest-connect-ui' ) . '</dt>
+							<dt>' . __( 'Email', 'wp-api-connect-ui' ) . '</dt>
 							<dd>' . ( ! empty( $user->email ) ? esc_attr( $user->email ) : '' ) .'</dd>
 						</dl>
 					</td>
@@ -648,8 +648,8 @@ class WDSRESTCUI_Settings {
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th>' . __( 'Connected Site Name', 'wds-rest-connect-ui' ) . '</th>
-					<th>' . __( 'Connected Site Description', 'wds-rest-connect-ui' ) . '</th>
+					<th>' . __( 'Connected Site Name', 'wp-api-connect-ui' ) . '</th>
+					<th>' . __( 'Connected Site Description', 'wp-api-connect-ui' ) . '</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -665,7 +665,7 @@ class WDSRESTCUI_Settings {
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th>'. __( 'Available Routes:', 'wds-rest-connect-ui' ) .'</th>
+					<th>'. __( 'Available Routes:', 'wp-api-connect-ui' ) .'</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -673,7 +673,7 @@ class WDSRESTCUI_Settings {
 			</tbody>
 		</table>
 		<br>
-		<p><a class="button-secondary" href="'. $this->settings_url() .'">' . __( 'Dismiss', 'wds-rest-connect-ui' ) . '</a>&nbsp;&nbsp;<a class="button-secondary" href="'. $this->reauth_url() .'">' . __( 'Re-authenticate', 'wds-rest-connect-ui' ) . '</a></p>
+		<p><a class="button-secondary" href="'. $this->settings_url() .'">' . __( 'Dismiss', 'wp-api-connect-ui' ) . '</a>&nbsp;&nbsp;<a class="button-secondary" href="'. $this->reauth_url() .'">' . __( 'Re-authenticate', 'wp-api-connect-ui' ) . '</a></p>
 		';
 
 
@@ -698,9 +698,9 @@ class WDSRESTCUI_Settings {
 			return false;
 		}
 
-		$authenticate = '<p><a class="button-secondary" href="'. esc_url( $url ) .'">' . __( 'Click here to authenticate', 'wds-rest-connect-ui' ) . '</a></p>';
+		$authenticate = '<p><a class="button-secondary" href="'. esc_url( $url ) .'">' . __( 'Click here to authenticate', 'wp-api-connect-ui' ) . '</a></p>';
 
-		$this->register_notice( $authenticate, false, __( "You're almost there.", 'wds-rest-connect-ui' ) );
+		$this->register_notice( $authenticate, false, __( "You're almost there.", 'wp-api-connect-ui' ) );
 
 		return false;
 	}
@@ -719,7 +719,7 @@ class WDSRESTCUI_Settings {
 		<h4>'. $request->get_error_message() .'</h4>
 		<h4>'. $request->get_error_code() .'</h4>
 		<xmp>Error Data: '. print_r( $request->get_error_data(), true ) .'</xmp>
-		<p><a class="button-secondary" href="'. add_query_arg( 'dismiss_errrors', 1 ) .'">' . __( 'Dismiss Errors', 'wds-rest-connect-ui' ) . '</a></p>
+		<p><a class="button-secondary" href="'. add_query_arg( 'dismiss_errrors', 1 ) .'">' . __( 'Dismiss Errors', 'wp-api-connect-ui' ) . '</a></p>
 		';
 
 		$this->register_notice( $message );
@@ -742,7 +742,7 @@ class WDSRESTCUI_Settings {
 
 		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
 
-		$check_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $url .'">' . __( 'Check API Connection', 'wds-rest-connect-ui' ) . '</a></form>';
+		$check_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $url .'">' . __( 'Check API Connection', 'wp-api-connect-ui' ) . '</a></form>';
 		// Add a check-api button to the form
 		$format = str_replace(
 			'</form>',
@@ -768,7 +768,7 @@ class WDSRESTCUI_Settings {
 
 		$reset_url = str_replace( '%', '%%', esc_url( $this->reset_url() ) );
 
-		$reset_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'wds-rest-connect-ui' ) . '</a></form>';
+		$reset_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'wp-api-connect-ui' ) . '</a></form>';
 		// Add a check-api button to the form
 		$format = str_replace(
 			'</form>',
@@ -794,8 +794,8 @@ class WDSRESTCUI_Settings {
 	public function register_notice( $message, $error = true, $title = null ) {
 		if ( is_null( $title ) ) {
 			$title = $error
-				? __( 'ERROR:', 'wds-rest-connect-ui' )
-				: __( 'SUCCESS:', 'wds-rest-connect-ui' );
+				? __( 'ERROR:', 'wp-api-connect-ui' )
+				: __( 'SUCCESS:', 'wp-api-connect-ui' );
 		}
 
 		$type  = $error ? 'error' : 'updated';
@@ -897,7 +897,7 @@ class WDSRESTCUI_Settings {
 	 * @param  boolean $header_key   Value for header key if we have it
 	 * @param  boolean $header_token Value for header token if we have it
 	 *
-	 * @return mixed                 Result of WDS_WP_REST_API\OAuth1\Connect::do_discovery
+	 * @return mixed                 Result of Zao\WP_API\OAuth1\Connect::do_discovery
 	 */
 	public function do_discovery( $url, $header_key = false, $header_token = false ) {
 		$api = $this->api();
@@ -911,7 +911,7 @@ class WDSRESTCUI_Settings {
 	/**
 	 * Return (and initiate) API object.
 	 *
-	 * @return WDS_Network_Connect_API_Connect
+	 * @return Zao\WP_API\OAuth1\Connect
 	 */
 	public function api() {
 		if ( $this->api->key() && $this->api->client_key ) {

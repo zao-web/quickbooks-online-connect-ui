@@ -1,29 +1,29 @@
 {
-    "name": "webdevstudios/wds-wp-rest-api-connect-ui",
+    "name": "zao-web/wp-api-connect-ui",
     "type": "wordpress-plugin",
-    "description": "Provides UI for connecting from one WordPress installation to another via the WordPress REST AP over OAuth1. This plugin is a UI wrapper for WDS WP REST API Connect.",
+    "description": "Provides UI for connecting from one WordPress installation to another via the WordPress REST AP over OAuth1. This plugin is a UI wrapper for WP API Connect.",
     "license": "GPL-2.0+",
     "authors": [
         {
-            "name": "WebDevStudios",
-            "email": "contact@webdevstudios.com",
-            "homepage": "https://github.com/WebDevStudios",
+            "name": "Zao",
+            "email": "jt@zao.is",
+            "homepage": "https://github.com/zao-web",
             "role": "Developer"
         }
     ],
     "keywords": ["wordpress", "wp-api", "json" ],
-    "homepage": "https://github.com/WebDevStudios/WDS-WP-REST-API-Connect-UI",
+    "homepage": "https://github.com/zao-web/wp-api-connect-ui",
     "support": {
-        "issues": "https://github.com/WebDevStudios/WDS-WP-REST-API-Connect-UI/issues",
-        "source": "https://github.com/WebDevStudios/WDS-WP-REST-API-Connect-UI"
+        "issues": "https://github.com/zao-web/wp-api-connect-ui/issues",
+        "source": "https://github.com/zao-web/wp-api-connect-ui"
     },
     "require": {
         "php": ">5.3",
-        "webdevstudios/wds-wp-rest-api-connect": "^v0.2.5",
+        "zao-web/wp-api-connect": "^v0.2.6",
         "webdevstudios/cmb2": "dev-master"
     },
     "autoload": {
-        "classmap": ["vendor/webdevstudios/wds-wp-rest-api-connect/wds-wp-rest-api-connect.php","includes"],
+        "classmap": ["vendor/zao-web/wp-api-connect/wp-api-connect.php","includes"],
         "files": ["vendor/webdevstudios/cmb2/init.php"]
     },
     "minimum-stability": "dev"

@@ -1,6 +1,6 @@
 <?php
 
-class WDSRESTCUI_Settings_Test extends WP_UnitTestCase {
+class ZAPIC_Settings_Test extends WP_UnitTestCase {
 
 	function test_sample() {
 		// replace this with some actual testing code
@@ -8,10 +8,10 @@ class WDSRESTCUI_Settings_Test extends WP_UnitTestCase {
 	}
 
 	function test_class_exists() {
-		$this->assertTrue( class_exists( 'WDSRESTCUI_Settings') );
+		$this->assertTrue( class_exists( 'ZAPIC_Settings') );
 	}
 
 	function test_class_access() {
-		$this->assertTrue( wds_rest_connect_ui()->settings instanceof WDSRESTCUI_Settings );
+		$this->assertTrue( wp_api_connect_ui()->settings instanceof ZAPIC_Settings );
 	}
 }

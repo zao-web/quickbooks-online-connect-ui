@@ -84,7 +84,7 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: 'wds-rest-connect-ui.zip'
+					archive: 'wp-api-connect-ui.zip'
 				},
 				files: [ {
 						expand: true,
@@ -108,9 +108,9 @@ module.exports = function( grunt ) {
 							'!vendor/symfony/event-dispatcher/Tests/**',
 							'!vendor/guzzle/guzzle/phing/**',
 							'!vendor/guzzle/guzzle/docs/**',
-							'!vendor/webdevstudios/wds-wp-rest-api-connect/vendor/**'
+							'!vendor/zao-web/wp-api-connect/vendor/**'
 						],
-						dest: '/wds-rest-connect-ui'
+						dest: '/wp-api-connect-ui'
 				} ]
 			}
 		},

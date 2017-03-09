@@ -1,19 +1,19 @@
 <?php
 /**
- * Plugin Name: WDS WP REST API Connect UI
- * Plugin URI:  http://webdevstudios.com
+ * Plugin Name: WP API Connect UI
+ * Plugin URI:  http://zao.is
  * Description: Provides UI for connecting from one WordPress installation to another via the WP REST API over <a href="https://github.com/WP-API/OAuth1">OAuth1</a>
- * Version:     0.2.5
- * Author:      WebDevStudios
- * Author URI:  http://webdevstudios.com
- * Donate link: http://webdevstudios.com
+ * Version:     0.2.6
+ * Author:      Zao
+ * Author URI:  http://zao.is
+ * Donate link: http://zao.is
  * License:     GPLv2
- * Text Domain: wds-rest-connect-ui
+ * Text Domain: wp-api-connect-ui
  * Domain Path: /languages
  */
 
 /**
- * Copyright (c) 2015 WebDevStudios (email : contact@webdevstudios.com)
+ * Copyright (c) 2015 Zao (email : jt@zao.is)
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License, version 2 or, at
@@ -35,7 +35,7 @@
  */
 
 // include composer autoloader (make sure you run `composer install`!)
-require_once WDS_REST_Connect_UI::dir( 'vendor/autoload.php' );
+require_once Zao_API_Connect_UI::dir( 'vendor/autoload.php' );
 
 /**
  * Main initiation class
@@ -46,7 +46,7 @@ require_once WDS_REST_Connect_UI::dir( 'vendor/autoload.php' );
  * @var  string $url      Plugin URL
  * @var  string $path     Plugin Path
  */
-class WDS_REST_Connect_UI {
+class Zao_API_Connect_UI {
 
 	/**
 	 * Current version
@@ -54,7 +54,7 @@ class WDS_REST_Connect_UI {
 	 * @var  string
 	 * @since  0.1.0
 	 */
-	const VERSION = '0.2.5';
+	const VERSION = '0.2.6';
 
 	/**
 	 * Plugin basename
@@ -90,7 +90,7 @@ class WDS_REST_Connect_UI {
 
 	/**
 	 * Whether plugin should operate on the network settings level.
-	 * Enabled via the WDSRESTCUI_NETWORK_SETTINGS constant
+	 * Enabled via the ZAPIC_NETWORK_SETTINGS constant
 	 *
 	 * @var bool
 	 * @since  0.1.0
@@ -100,22 +100,22 @@ class WDS_REST_Connect_UI {
 	/**
 	 * Singleton instance of plugin
 	 *
-	 * @var WDS_REST_Connect_UI
+	 * @var Zao_API_Connect_UI
 	 * @since  0.1.0
 	 */
 	protected static $single_instance = null;
 
 	/**
-	 * Instance of WDSRESTCUI_Settings
+	 * Instance of ZAPIC_Settings
 	 *
-	 * @var WDSRESTCUI_Settings
+	 * @var ZAPIC_Settings
 	 */
 	protected $settings;
 
 	/**
-	 * Instance of WDSRESTCUI_Compatibility, an abstraction layer for Connect
+	 * Instance of ZAPIC_Compatibility, an abstraction layer for Connect
 	 *
-	 * @var WDSRESTCUI_Compatibility
+	 * @var ZAPIC_Compatibility
 	 */
 	protected $api;
 
@@ -123,7 +123,7 @@ class WDS_REST_Connect_UI {
 	 * Creates or returns an instance of this class.
 	 *
 	 * @since  0.1.0
-	 * @return WDS_REST_Connect_UI A single instance of this class.
+	 * @return Zao_API_Connect_UI A single instance of this class.
 	 */
 	public static function get_instance() {
 		if ( null === self::$single_instance ) {
@@ -142,7 +142,7 @@ class WDS_REST_Connect_UI {
 		$this->basename   = plugin_basename( __FILE__ );
 		$this->url        = plugin_dir_url( __FILE__ );
 		$this->path       = plugin_dir_path( __FILE__ );
-		$this->is_network = apply_filters( 'wds_rest_connect_ui_is_network', defined( 'WDSRESTCUI_NETWORK_SETTINGS' ) );
+		$this->is_network = apply_filters( 'wp_api_connect_ui_is_network', defined( 'ZAPIC_NETWORK_SETTINGS' ) );
 
 		$this->plugin_classes();
 	}
@@ -155,13 +155,13 @@ class WDS_REST_Connect_UI {
 	 */
 	public function plugin_classes() {
 		$storage_classes = $this->is_network ? array(
-			'options_class' => 'WDSRESTCUI_Storage_Options',
-			'transients_class' => 'WDSRESTCUI_Storage_Transients',
+			'options_class' => 'ZAPIC_Storage_Options',
+			'transients_class' => 'ZAPIC_Storage_Transients',
 		) : array();
 
-		$this->api = new WDS_WP_REST_API\OAuth1\Connect( $storage_classes );
+		$this->api = new Zao\WP_API\OAuth1\Connect( $storage_classes );
 
-		$class = $this->is_network ? 'WDSRESTCUI_Network_Settings' : 'WDSRESTCUI_Settings';
+		$class = $this->is_network ? 'ZAPIC_Network_Settings' : 'ZAPIC_Settings';
 		$this->settings = new $class( $this->basename, $this->api );
 	} // END OF PLUGIN CLASSES FUNCTION
 
@@ -184,7 +184,7 @@ class WDS_REST_Connect_UI {
 	 */
 	public function init() {
 		if ( $this->check_requirements() ) {
-			load_plugin_textdomain( 'wds-rest-connect-ui', false, dirname( $this->basename ) . '/languages/' );
+			load_plugin_textdomain( 'wp-api-connect-ui', false, dirname( $this->basename ) . '/languages/' );
 		}
 	}
 
@@ -198,14 +198,14 @@ class WDS_REST_Connect_UI {
 
 		// Plugin requires CMB2
 		if ( ! defined( 'CMB2_LOADED' ) ) {
-			$this->activation_error = sprintf( __( 'WDS WP REST API Connect UI requires the <a href="https://wordpress.org/plugins/cmb2/">CMB2 plugin</a>, so it has been <a href="%s">deactivated</a>.', 'wds-network-require-login' ), admin_url( 'plugins.php' ) );
+			$this->activation_error = sprintf( __( 'WP API Connect UI requires the <a href="https://wordpress.org/plugins/cmb2/">CMB2 plugin</a>, so it has been <a href="%s">deactivated</a>.', 'wp-api-connect-ui' ), admin_url( 'plugins.php' ) );
 
 			return false;
 		}
 
 		// If network-level, but not network-activated, it fails
 		if ( $this->is_network && ! is_plugin_active_for_network( $this->basename ) ) {
-			$this->activation_error = sprintf( __( "WDS WP REST API Connect UI has been designated as a network-only plugin (via the <code>'wds_rest_connect_ui_is_network'</code> filter or the <code>'WDSRESTCUI_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'wds-network-require-login' ), admin_url( 'plugins.php' ) );
+			$this->activation_error = sprintf( __( "WP API Connect UI has been designated as a network-only plugin (via the <code>'wp_api_connect_ui_is_network'</code> filter or the <code>'ZAPIC_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'wp-api-connect-ui' ), admin_url( 'plugins.php' ) );
 
 			return false;
 		}
@@ -314,21 +314,21 @@ class WDS_REST_Connect_UI {
 }
 
 /**
- * Grab the WDS_REST_Connect_UI object and return it.
- * Wrapper for WDS_REST_Connect_UI::get_instance()
+ * Grab the Zao_API_Connect_UI object and return it.
+ * Wrapper for Zao_API_Connect_UI::get_instance()
  *
  * @since  0.1.0
- * @return WDS_REST_Connect_UI  Singleton instance of plugin class.
+ * @return Zao_API_Connect_UI  Singleton instance of plugin class.
  */
-function wds_rest_connect_ui() {
-	return WDS_REST_Connect_UI::get_instance();
+function wp_api_connect_ui() {
+	return Zao_API_Connect_UI::get_instance();
 }
 
 // Kick it off
-add_action( 'plugins_loaded', array( wds_rest_connect_ui(), 'hooks' ) );
+add_action( 'plugins_loaded', array( wp_api_connect_ui(), 'hooks' ) );
 
 /**
- * Wrapper function for WDSRESTCUI_Settings::get()
+ * Wrapper function for ZAPIC_Settings::get()
  *
  * Available options;
  *    'url'
@@ -346,25 +346,25 @@ add_action( 'plugins_loaded', array( wds_rest_connect_ui(), 'hooks' ) );
  *
  * @return mixed             Value for setting.
  */
-function wds_rest_connect_ui_get_setting( $field_id = '', $default = false ) {
-	return wds_rest_connect_ui()->settings->get( $field_id, $default );
+function wp_api_connect_ui_get_setting( $field_id = '', $default = false ) {
+	return wp_api_connect_ui()->settings->get( $field_id, $default );
 }
 
 /**
- * Wrapper function for WDSRESTCUI_Settings::api()
+ * Wrapper function for ZAPIC_Settings::api()
  *
  * @since  0.1.0
  *
  * @return WP_Error|Connect The API object or WP_Error.
  */
-function wds_rest_connect_ui_api_object() {
-	$settings = wds_rest_connect_ui()->settings;
+function wp_api_connect_ui_api_object() {
+	$settings = wp_api_connect_ui()->settings;
 	$api = $settings->api();
 
 	if ( '' === $api->key() ) {
-		$error = sprintf( __( 'API connection is not properly authenticated. Authenticate via the <a href="%s">settings page</a>.', 'wds-rest-connect-ui' ), $settings->settings_url() );
+		$error = sprintf( __( 'API connection is not properly authenticated. Authenticate via the <a href="%s">settings page</a>.', 'wp-api-connect-ui' ), $settings->settings_url() );
 
-		return new WP_Error( 'wds_rest_connect_ui_api_fail', $error );
+		return new WP_Error( 'wp_api_connect_ui_api_fail', $error );
 	}
 
 	return $api;
@@ -373,12 +373,12 @@ function wds_rest_connect_ui_api_object() {
 /**
  *
  * In your theme or plugin, Instead of checking if the
- * 'wds_rest_connect_ui_api_object' function exists you can use:
+ * 'wp_api_connect_ui_api_object' function exists you can use:
  *
- * `$api = apply_filters( 'wds_rest_connect_ui_api_object', null );`
+ * `$api = apply_filters( 'wp_api_connect_ui_api_object', null );`
  *
  * Then check for Connect or WP_Error value before proceeding:
- * `if ( is_a( $api, 'WDS_WP_REST_API\OAuth1\Connect' ) ) { $schema = $api->auth_get_request(); }`
+ * `if ( is_a( $api, 'Zao\WP_API\OAuth1\Connect' ) ) { $schema = $api->auth_get_request(); }`
  *
  */
-add_filter( 'wds_rest_connect_ui_api_object', 'wds_rest_connect_ui_api_object' );
+add_filter( 'wp_api_connect_ui_api_object', 'wp_api_connect_ui_api_object' );
