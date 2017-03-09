@@ -231,15 +231,13 @@ class ZAPIC_Settings {
 			add_action( 'cmb2_after_init', array( $this, 'process_fields' ), 11 );
 		}
 
-
-
-		$url     = $this->get_current_value( 'url', 'esc_url_raw' );
-		$api_url = $this->get_current_value( 'api_url', 'esc_url_raw' );
-		$key     = $this->get_current_value( 'consumer_key', 'sanitize_text_field' );
+		$url          = $this->get_current_value( 'url', 'esc_url_raw' );
+		$api_url      = $this->get_current_value( 'api_url', 'esc_url_raw' );
+		$key          = $this->get_current_value( 'consumer_key', 'sanitize_text_field' );
+		$header_key   = $this->get_current_value( 'header_key', 'sanitize_text_field' );
+		$header_token = $this->get_current_value( 'header_token', 'sanitize_text_field' );
 
 		if ( $url && ! $this->api()->discovered() ) {
-			$header_key = $this->get_current_value( 'header_key', 'sanitize_text_field' );
-			$header_token = $this->get_current_value( 'header_token', 'sanitize_text_field' );
 			$result = $this->do_discovery( $url, $header_key, $header_token );
 
 			if ( ! is_wp_error( $result ) ) {
@@ -293,11 +291,15 @@ class ZAPIC_Settings {
 			) );
 		}
 
+		$header_key   = $this->get_current_value( 'header_key', 'sanitize_text_field' );
+		$header_token = $this->get_current_value( 'header_token', 'sanitize_text_field' );
+
 		$cmb->add_field( array(
-			'name' => __( 'Optional Headers', 'wp-api-connect-ui' ),
-			'desc' => __( 'If the WordPress API requires a Header Key/Token for access, i.e. <a href="https://github.com/WebDevStudios/WDS-Allow-REST-API">WDS Allow REST API</a>.', 'wp-api-connect-ui' ),
-			'id'   => 'header_title',
-			'type' => 'title',
+			'before_row' => '<p class="toggle-optional-headers"><label><input type="checkbox" id="toggle-optional-headers" '. checked( $header_key || $header_token, 1, false ) .'/>' . __( 'Toggle Optional Headers', 'domain' ) . '</label></p><section class="optional-headers ' . ( $header_key || $header_token ? '' : 'hidden"' ) . '">',
+			'name'   => __( 'Optional Headers', 'wp-api-connect-ui' ),
+			'desc'   => __( 'If the WordPress API requires a Header Key/Token for access, i.e. <a href="https://github.com/WebDevStudios/WDS-Allow-REST-API">WDS Allow REST API</a>.', 'wp-api-connect-ui' ),
+			'id'     => 'header_title',
+			'type'   => 'title',
 		) );
 
 		$cmb->add_field( array(
@@ -307,9 +309,19 @@ class ZAPIC_Settings {
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Header Token', 'wp-api-connect-ui' ),
-			'id'   => 'header_token',
-			'type' => 'text',
+			'name'  => __( 'Header Token', 'wp-api-connect-ui' ),
+			'id'    => 'header_token',
+			'type'  => 'text',
+			'after_row' => '</section>
+			<script type="text/javascript">
+				jQuery( function( $ ) {
+					var $checkbox = $( document.getElementById( "toggle-optional-headers" ) );
+					$checkbox.on( "change", function() {
+						$( ".optional-headers" )[ $checkbox.is( ":checked" ) ? "removeClass" : "addClass" ]( "hidden" );
+					} );
+				});
+			</script>
+			',
 		) );
 	}
 
