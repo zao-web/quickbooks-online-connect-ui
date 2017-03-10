@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: grunt-wp-i18n 0.5.3\n"
 
 #: includes/settings.php:75
-msgid "WP REST API Connect"
+msgid "WP API Connect"
 msgstr ""
 
 #: includes/settings.php:143

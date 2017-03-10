@@ -72,7 +72,7 @@ class ZAPIC_Settings {
 	public function __construct( $plugin_basename, Connect $api ) {
 		$this->plugin_action_links_hook .= $plugin_basename;
 		$this->api   = $api;
-		$this->title = __( 'WP REST API Connect', 'wp-api-connect-ui' );
+		$this->title = __( 'WP API Connect', 'wp-api-connect-ui' );
 	}
 
 	/**
