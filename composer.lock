@@ -347,16 +347,16 @@
             "time": "2017-02-27 15:05:31"
         },
         {
-            "name": "zao-web/wp-api-connect",
+            "name": "zao-web/qbo-connect",
             "version": "v0.2.6",
             "source": {
                 "type": "git",
-                "url": "https://github.com/zao-web/wp-api-connect.git",
+                "url": "https://github.com/zao-web/qbo-connect.git",
                 "reference": "b8c66fb85e7d71af358f07b61a737c900d2b5545"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zao-web/wp-api-connect/zipball/b8c66fb85e7d71af358f07b61a737c900d2b5545",
+                "url": "https://api.github.com/repos/zao-web/qbo-connect/zipball/b8c66fb85e7d71af358f07b61a737c900d2b5545",
                 "reference": "b8c66fb85e7d71af358f07b61a737c900d2b5545",
                 "shasum": ""
             },
@@ -386,7 +386,7 @@
                 }
             ],
             "description": "Helper class for connecting from one WordPress installation to another via the WordPress REST API and OAuth.",
-            "homepage": "https://github.com/zao-web/wp-api-connect",
+            "homepage": "https://github.com/zao-web/qbo-connect",
             "keywords": [
                 "json",
                 "wordpress",

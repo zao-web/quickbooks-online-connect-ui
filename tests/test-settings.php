@@ -1,6 +1,6 @@
 <?php
 
-class ZAPIC_Settings_Test extends WP_UnitTestCase {
+class Zao_QBO_API_Settings_Test extends WP_UnitTestCase {
 
 	function test_sample() {
 		// replace this with some actual testing code
@@ -8,10 +8,10 @@ class ZAPIC_Settings_Test extends WP_UnitTestCase {
 	}
 
 	function test_class_exists() {
-		$this->assertTrue( class_exists( 'ZAPIC_Settings') );
+		$this->assertTrue( class_exists( 'Zao_QBO_API_Settings') );
 	}
 
 	function test_class_access() {
-		$this->assertTrue( wp_api_connect_ui()->settings instanceof ZAPIC_Settings );
+		$this->assertTrue( qbo_connect_ui()->settings instanceof Zao_QBO_API_Settings );
 	}
 }

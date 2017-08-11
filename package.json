@@ -1,8 +1,8 @@
 {
-	"name": "wp-api-connect-ui",
-	"title": "WP API Connect UI",
+	"name": "qbo-connect-ui",
+	"title": "Quickbooks Online Connect UI",
 	"version": "0.2.6",
-	"description": "Provides UI for connecting from one WordPress installation to another via the WP REST API over <a href=\"https://github.com/WP-API/OAuth1\">OAuth1</a>",
+	"description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
 	"author": {
 		"name": "Zao",
 		"url": "http://zao.is"

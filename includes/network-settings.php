@@ -1,11 +1,11 @@
 <?php
 /**
- * WP API Connect UI Network Settings
+ * Quickbooks Online Connect UI Network Settings
  * @version 0.1.0
- * @package WP API Connect UI
+ * @package Quickbooks Online Connect UI
  */
 
-class ZAPIC_Network_Settings extends ZAPIC_Settings {
+class Zao_QBO_API_Network_Settings extends Zao_QBO_API_Settings {
 
 	/**
 	 * Which admin menu hook to use for displaying the options page

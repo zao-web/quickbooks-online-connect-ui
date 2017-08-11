@@ -1,6 +1,6 @@
 <?php
 
-class ZAPIC_Compatibility_Test extends WP_UnitTestCase {
+class Zao_QBO_API_Compatibility_Test extends WP_UnitTestCase {
 
 	function test_sample() {
 		// replace this with some actual testing code
@@ -8,10 +8,10 @@ class ZAPIC_Compatibility_Test extends WP_UnitTestCase {
 	}
 
 	function test_class_exists() {
-		$this->assertTrue( class_exists( 'ZAPIC_Compatibility') );
+		$this->assertTrue( class_exists( 'Zao_QBO_API_Compatibility') );
 	}
 
 	function test_class_access() {
-		$this->assertTrue( wp_api_connect_ui()->compatibility instanceof ZAPIC_Compatibility );
+		$this->assertTrue( qbo_connect_ui()->compatibility instanceof Zao_QBO_API_Compatibility );
 	}
 }

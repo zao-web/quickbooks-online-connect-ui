@@ -1,7 +1,7 @@
 {
-    "name": "zao-web/wp-api-connect-ui",
+    "name": "zao-web/qbo-connect-ui",
     "type": "wordpress-plugin",
-    "description": "Provides UI for connecting from one WordPress installation to another via the WordPress REST AP over OAuth1. This plugin is a UI wrapper for WP API Connect.",
+    "description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
     "license": "GPL-2.0+",
     "authors": [
         {
@@ -12,18 +12,18 @@
         }
     ],
     "keywords": ["wordpress", "wp-api", "json" ],
-    "homepage": "https://github.com/zao-web/wp-api-connect-ui",
+    "homepage": "https://github.com/zao-web/qbo-connect-ui",
     "support": {
-        "issues": "https://github.com/zao-web/wp-api-connect-ui/issues",
-        "source": "https://github.com/zao-web/wp-api-connect-ui"
+        "issues": "https://github.com/zao-web/qbo-connect-ui/issues",
+        "source": "https://github.com/zao-web/qbo-connect-ui"
     },
     "require": {
         "php": ">5.3",
-        "zao-web/wp-api-connect": "^v0.2.6",
+        "zao-web/qbo-connect": "^v0.2.6",
         "webdevstudios/cmb2": "dev-master"
     },
     "autoload": {
-        "classmap": ["vendor/zao-web/wp-api-connect/wp-api-connect.php","includes"],
+        "classmap": ["vendor/zao-web/qbo-connect/qbo-connect.php","includes"],
         "files": ["vendor/webdevstudios/cmb2/init.php"]
     },
     "minimum-stability": "dev"

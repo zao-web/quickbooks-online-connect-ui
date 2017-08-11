@@ -84,7 +84,7 @@ module.exports = function( grunt ) {
 			main: {
 				options: {
 					mode: 'zip',
-					archive: 'wp-api-connect-ui.zip'
+					archive: 'qbo-connect-ui.zip'
 				},
 				files: [ {
 						expand: true,
@@ -108,9 +108,9 @@ module.exports = function( grunt ) {
 							'!vendor/symfony/event-dispatcher/Tests/**',
 							'!vendor/guzzle/guzzle/phing/**',
 							'!vendor/guzzle/guzzle/docs/**',
-							'!vendor/zao-web/wp-api-connect/vendor/**'
+							'!vendor/zao-web/qbo-connect/vendor/**'
 						],
-						dest: '/wp-api-connect-ui'
+						dest: '/qbo-connect-ui'
 				} ]
 			}
 		},

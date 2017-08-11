@@ -1,12 +1,12 @@
 <?php
-use Zao\WP_API\Storage\Transients;
+use Zao\QBO_API\Storage\Transients;
 
 /**
- * WP API Connect UI Storage Transients
+ * Quickbooks Online Connect UI Storage Transients
  * @version 0.1.0
- * @package WP API Connect UI
+ * @package Quickbooks Online Connect UI
  */
-class ZAPIC_Storage_Transients extends Transients {
+class Zao_QBO_API_Storage_Transients extends Transients {
 	protected function get_from_db() {
 		return call_user_func_array( 'get_site_transient', func_get_args() );
 	}

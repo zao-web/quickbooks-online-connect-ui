@@ -2,9 +2,9 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: WP API Connect UI 0.2.6\n"
+"Project-Id-Version: Quickbooks Online Connect UI 0.2.6\n"
 "Report-Msgid-Bugs-To: "
-"https://wordpress.org/support/plugin/wp-api-connect-ui\n"
+"https://wordpress.org/support/plugin/qbo-connect-ui\n"
 "POT-Creation-Date: 2017-03-09 19:23:39+00:00\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
@@ -15,7 +15,7 @@ msgstr ""
 "X-Generator: grunt-wp-i18n 0.5.3\n"
 
 #: includes/settings.php:75
-msgid "WP API Connect"
+msgid "Quickbooks Online Connect"
 msgstr ""
 
 #: includes/settings.php:143
@@ -862,89 +862,89 @@ msgstr ""
 msgid "No terms"
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/example.php:91
+#: vendor/zao-web/qbo-connect/example.php:91
 msgid "Reset Connection"
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/lib/server.php:226
+#: vendor/zao-web/qbo-connect/lib/server.php:226
 msgid "It is possible the Callback URL is invalid. Please check."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:204
+#: vendor/zao-web/qbo-connect/qbo-connect.php:204
 msgid "There is a problem with the provided api_url parameter. %s."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:209
+#: vendor/zao-web/qbo-connect/qbo-connect.php:209
 msgid "Couldn't find the API at <code>%s</code>."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:215
+#: vendor/zao-web/qbo-connect/qbo-connect.php:215
 msgid "Site doesn't appear to support OAuth 1.0a authentication."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:237
+#: vendor/zao-web/qbo-connect/qbo-connect.php:237
 msgid "Please call %s."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:241
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:323
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:676
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:777
+#: vendor/zao-web/qbo-connect/qbo-connect.php:241
+#: vendor/zao-web/qbo-connect/qbo-connect.php:323
+#: vendor/zao-web/qbo-connect/qbo-connect.php:676
+#: vendor/zao-web/qbo-connect/qbo-connect.php:777
 msgid "Missing client key."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:250
+#: vendor/zao-web/qbo-connect/qbo-connect.php:250
 msgid "There was a problem fetching the temporary credentials: %s"
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:354
+#: vendor/zao-web/qbo-connect/qbo-connect.php:354
 msgid "Couldn't find the API temporary credentials."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:371
+#: vendor/zao-web/qbo-connect/qbo-connect.php:371
 msgid "There was a problem completing authorization: %s"
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:394
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:680
+#: vendor/zao-web/qbo-connect/qbo-connect.php:394
+#: vendor/zao-web/qbo-connect/qbo-connect.php:680
 msgid "Authorization has not yet been granted."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:705
+#: vendor/zao-web/qbo-connect/qbo-connect.php:705
 msgid "Received error [%s] with status code [%s] when making request."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:782
+#: vendor/zao-web/qbo-connect/qbo-connect.php:782
 msgid "There was a problem connecting to the API URL specified."
 msgstr ""
 
-#: vendor/zao-web/wp-api-connect/wp-api-connect.php:808
+#: vendor/zao-web/qbo-connect/qbo-connect.php:808
 msgid "Could not retrive body from URL: \"%s\""
 msgstr ""
 
-#: wp-api-connect-ui.php:201
+#: qbo-connect-ui.php:201
 msgid ""
-"WP API Connect UI requires the <a "
+"Quickbooks Online Connect UI requires the <a "
 "href=\"https://wordpress.org/plugins/cmb2/\">CMB2 plugin</a>, so it has "
 "been <a href=\"%s\">deactivated</a>."
 msgstr ""
 
-#: wp-api-connect-ui.php:208
+#: qbo-connect-ui.php:208
 msgid ""
-"WP API Connect UI has been designated as a network-only plugin (via the "
-"<code>'wp_api_connect_ui_is_network'</code> filter or the "
-"<code>'ZAPIC_NETWORK_SETTINGS'</code> constant), so it has been <a "
+"Quickbooks Online Connect UI has been designated as a network-only plugin (via the "
+"<code>'qbo_connect_ui_is_network'</code> filter or the "
+"<code>'Zao_QBO_API_NETWORK_SETTINGS'</code> constant), so it has been <a "
 "href=\"%s\">deactivated</a>. Please try network-activating."
 msgstr ""
 
-#: wp-api-connect-ui.php:365
+#: qbo-connect-ui.php:365
 msgid ""
 "API connection is not properly authenticated. Authenticate via the <a "
 "href=\"%s\">settings page</a>."
 msgstr ""
 
 #. Plugin Name of the plugin/theme
-msgid "WP API Connect UI"
+msgid "Quickbooks Online Connect UI"
 msgstr ""
 
 #. Author URI of the plugin/theme
@@ -953,8 +953,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Provides UI for connecting from one WordPress installation to another via "
-"the WP REST API over <a href=\"https://github.com/WP-API/OAuth1\">OAuth1</a>"
+"Provides UI for connecting to Quickbooks Online over OAuth1."
 msgstr ""
 
 #. Author of the plugin/theme

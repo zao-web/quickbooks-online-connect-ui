@@ -1,14 +1,14 @@
 <?php
 /**
- * Plugin Name: WP API Connect UI
+ * Plugin Name: Quickbooks Online Connect UI
  * Plugin URI:  http://zao.is
- * Description: Provides UI for connecting from one WordPress installation to another via the WP REST API over <a href="https://github.com/WP-API/OAuth1">OAuth1</a>
+ * Description: Provides UI for connecting to Quickbooks Online over OAuth1.
  * Version:     0.2.6
  * Author:      Zao
  * Author URI:  http://zao.is
  * Donate link: http://zao.is
  * License:     GPLv2
- * Text Domain: wp-api-connect-ui
+ * Text Domain: qbo-connect-ui
  * Domain Path: /languages
  */
 
@@ -35,7 +35,7 @@
  */
 
 // include composer autoloader (make sure you run `composer install`!)
-require_once Zao_API_Connect_UI::dir( 'vendor/autoload.php' );
+require_once Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' );
 
 /**
  * Main initiation class
@@ -46,7 +46,7 @@ require_once Zao_API_Connect_UI::dir( 'vendor/autoload.php' );
  * @var  string $url      Plugin URL
  * @var  string $path     Plugin Path
  */
-class Zao_API_Connect_UI {
+class Zao_QBO_API_Connect_UI {
 
 	/**
 	 * Current version
@@ -90,7 +90,7 @@ class Zao_API_Connect_UI {
 
 	/**
 	 * Whether plugin should operate on the network settings level.
-	 * Enabled via the ZAPIC_NETWORK_SETTINGS constant
+	 * Enabled via the Zao_QBO_API_NETWORK_SETTINGS constant
 	 *
 	 * @var bool
 	 * @since  0.1.0
@@ -100,22 +100,22 @@ class Zao_API_Connect_UI {
 	/**
 	 * Singleton instance of plugin
 	 *
-	 * @var Zao_API_Connect_UI
+	 * @var Zao_QBO_API_Connect_UI
 	 * @since  0.1.0
 	 */
 	protected static $single_instance = null;
 
 	/**
-	 * Instance of ZAPIC_Settings
+	 * Instance of Zao_QBO_API_Settings
 	 *
-	 * @var ZAPIC_Settings
+	 * @var Zao_QBO_API_Settings
 	 */
 	protected $settings;
 
 	/**
-	 * Instance of ZAPIC_Compatibility, an abstraction layer for Connect
+	 * Instance of Zao_QBO_API_Compatibility, an abstraction layer for Connect
 	 *
-	 * @var ZAPIC_Compatibility
+	 * @var Zao_QBO_API_Compatibility
 	 */
 	protected $api;
 
@@ -123,7 +123,7 @@ class Zao_API_Connect_UI {
 	 * Creates or returns an instance of this class.
 	 *
 	 * @since  0.1.0
-	 * @return Zao_API_Connect_UI A single instance of this class.
+	 * @return Zao_QBO_API_Connect_UI A single instance of this class.
 	 */
 	public static function get_instance() {
 		if ( null === self::$single_instance ) {
@@ -142,7 +142,7 @@ class Zao_API_Connect_UI {
 		$this->basename   = plugin_basename( __FILE__ );
 		$this->url        = plugin_dir_url( __FILE__ );
 		$this->path       = plugin_dir_path( __FILE__ );
-		$this->is_network = apply_filters( 'wp_api_connect_ui_is_network', defined( 'ZAPIC_NETWORK_SETTINGS' ) );
+		$this->is_network = apply_filters( 'qbo_connect_ui_is_network', defined( 'Zao_QBO_API_NETWORK_SETTINGS' ) );
 
 		$this->plugin_classes();
 	}
@@ -155,13 +155,13 @@ class Zao_API_Connect_UI {
 	 */
 	public function plugin_classes() {
 		$storage_classes = $this->is_network ? array(
-			'options_class' => 'ZAPIC_Storage_Options',
-			'transients_class' => 'ZAPIC_Storage_Transients',
+			'options_class' => 'Zao_QBO_API_Storage_Options',
+			'transients_class' => 'Zao_QBO_API_Storage_Transients',
 		) : array();
 
-		$this->api = new Zao\WP_API\OAuth1\Connect( $storage_classes );
+		$this->api = new Zao\QBO_API\OAuth1\Connect( $storage_classes );
 
-		$class = $this->is_network ? 'ZAPIC_Network_Settings' : 'ZAPIC_Settings';
+		$class = $this->is_network ? 'Zao_QBO_API_Network_Settings' : 'Zao_QBO_API_Settings';
 		$this->settings = new $class( $this->basename, $this->api );
 	} // END OF PLUGIN CLASSES FUNCTION
 
@@ -184,7 +184,7 @@ class Zao_API_Connect_UI {
 	 */
 	public function init() {
 		if ( $this->check_requirements() ) {
-			load_plugin_textdomain( 'wp-api-connect-ui', false, dirname( $this->basename ) . '/languages/' );
+			load_plugin_textdomain( 'qbo-connect-ui', false, dirname( $this->basename ) . '/languages/' );
 		}
 	}
 
@@ -198,14 +198,14 @@ class Zao_API_Connect_UI {
 
 		// Plugin requires CMB2
 		if ( ! defined( 'CMB2_LOADED' ) ) {
-			$this->activation_error = sprintf( __( 'WP API Connect UI requires the <a href="https://wordpress.org/plugins/cmb2/">CMB2 plugin</a>, so it has been <a href="%s">deactivated</a>.', 'wp-api-connect-ui' ), admin_url( 'plugins.php' ) );
+			$this->activation_error = sprintf( __( 'Quickbooks Online Connect UI requires the <a href="https://wordpress.org/plugins/cmb2/">CMB2 plugin</a>, so it has been <a href="%s">deactivated</a>.', 'qbo-connect-ui' ), admin_url( 'plugins.php' ) );
 
 			return false;
 		}
 
 		// If network-level, but not network-activated, it fails
 		if ( $this->is_network && ! is_plugin_active_for_network( $this->basename ) ) {
-			$this->activation_error = sprintf( __( "WP API Connect UI has been designated as a network-only plugin (via the <code>'wp_api_connect_ui_is_network'</code> filter or the <code>'ZAPIC_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'wp-api-connect-ui' ), admin_url( 'plugins.php' ) );
+			$this->activation_error = sprintf( __( "Quickbooks Online Connect UI has been designated as a network-only plugin (via the <code>'qbo_connect_ui_is_network'</code> filter or the <code>'Zao_QBO_API_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'qbo-connect-ui' ), admin_url( 'plugins.php' ) );
 
 			return false;
 		}
@@ -314,21 +314,21 @@ class Zao_API_Connect_UI {
 }
 
 /**
- * Grab the Zao_API_Connect_UI object and return it.
- * Wrapper for Zao_API_Connect_UI::get_instance()
+ * Grab the Zao_QBO_API_Connect_UI object and return it.
+ * Wrapper for Zao_QBO_API_Connect_UI::get_instance()
  *
  * @since  0.1.0
- * @return Zao_API_Connect_UI  Singleton instance of plugin class.
+ * @return Zao_QBO_API_Connect_UI  Singleton instance of plugin class.
  */
-function wp_api_connect_ui() {
-	return Zao_API_Connect_UI::get_instance();
+function qbo_connect_ui() {
+	return Zao_QBO_API_Connect_UI::get_instance();
 }
 
 // Kick it off
-add_action( 'plugins_loaded', array( wp_api_connect_ui(), 'hooks' ) );
+add_action( 'plugins_loaded', array( qbo_connect_ui(), 'hooks' ) );
 
 /**
- * Wrapper function for ZAPIC_Settings::get()
+ * Wrapper function for Zao_QBO_API_Settings::get()
  *
  * Available options;
  *    'url'
@@ -346,25 +346,25 @@ add_action( 'plugins_loaded', array( wp_api_connect_ui(), 'hooks' ) );
  *
  * @return mixed             Value for setting.
  */
-function wp_api_connect_ui_get_setting( $field_id = '', $default = false ) {
-	return wp_api_connect_ui()->settings->get( $field_id, $default );
+function qbo_connect_ui_get_setting( $field_id = '', $default = false ) {
+	return qbo_connect_ui()->settings->get( $field_id, $default );
 }
 
 /**
- * Wrapper function for ZAPIC_Settings::api()
+ * Wrapper function for Zao_QBO_API_Settings::api()
  *
  * @since  0.1.0
  *
  * @return WP_Error|Connect The API object or WP_Error.
  */
-function wp_api_connect_ui_api_object() {
-	$settings = wp_api_connect_ui()->settings;
+function qbo_connect_ui_api_object() {
+	$settings = qbo_connect_ui()->settings;
 	$api = $settings->api();
 
 	if ( '' === $api->key() ) {
-		$error = sprintf( __( 'API connection is not properly authenticated. Authenticate via the <a href="%s">settings page</a>.', 'wp-api-connect-ui' ), $settings->settings_url() );
+		$error = sprintf( __( 'API connection is not properly authenticated. Authenticate via the <a href="%s">settings page</a>.', 'qbo-connect-ui' ), $settings->settings_url() );
 
-		return new WP_Error( 'wp_api_connect_ui_api_fail', $error );
+		return new WP_Error( 'qbo_connect_ui_api_fail', $error );
 	}
 
 	return $api;
@@ -373,12 +373,12 @@ function wp_api_connect_ui_api_object() {
 /**
  *
  * In your theme or plugin, Instead of checking if the
- * 'wp_api_connect_ui_api_object' function exists you can use:
+ * 'qbo_connect_ui_api_object' function exists you can use:
  *
- * `$api = apply_filters( 'wp_api_connect_ui_api_object', null );`
+ * `$api = apply_filters( 'qbo_connect_ui_api_object', null );`
  *
  * Then check for Connect or WP_Error value before proceeding:
- * `if ( is_a( $api, 'Zao\WP_API\OAuth1\Connect' ) ) { $schema = $api->auth_get_request(); }`
+ * `if ( is_a( $api, 'Zao\QBO_API\OAuth1\Connect' ) ) { $schema = $api->auth_get_request(); }`
  *
  */
-add_filter( 'wp_api_connect_ui_api_object', 'wp_api_connect_ui_api_object' );
+add_filter( 'qbo_connect_ui_api_object', 'qbo_connect_ui_api_object' );

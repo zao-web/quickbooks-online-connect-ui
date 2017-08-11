@@ -1,12 +1,12 @@
 <?php
-use Zao\WP_API\Storage\Options;
+use Zao\QBO_API\Storage\Options;
 
 /**
- * WP API Connect UI Storage Options
+ * Quickbooks Online Connect UI Storage Options
  * @version 0.1.0
- * @package WP API Connect UI
+ * @package Quickbooks Online Connect UI
  */
-class ZAPIC_Storage_Options extends Options {
+class Zao_QBO_API_Storage_Options extends Options {
 	protected function get_from_db() {
 		return call_user_func_array( 'get_site_option', func_get_args() );
 	}
