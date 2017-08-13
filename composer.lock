@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "76e2dcdf7009e76a381c34cac75b5685",
+    "hash": "db6ff328bb09c1f8198b8476a6eb0655",
     "content-hash": "e58065f7aca9ef32d5f8504503760dd7",
     "packages": [
         {
@@ -117,12 +117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zao-web/quickbooks-online-connect.git",
-                "reference": "681540c25520cc483977bd49a4aaf1c9f8c9c087"
+                "reference": "06931dbbe95cfe8b7b82abb1e020c9476d3536b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/681540c25520cc483977bd49a4aaf1c9f8c9c087",
-                "reference": "681540c25520cc483977bd49a4aaf1c9f8c9c087",
+                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/06931dbbe95cfe8b7b82abb1e020c9476d3536b3",
+                "reference": "06931dbbe95cfe8b7b82abb1e020c9476d3536b3",
                 "shasum": ""
             },
             "require": {
@@ -147,14 +147,14 @@
                     "role": "Developer"
                 }
             ],
-            "description": "Helper class for connecting from one WordPress installation to another via the WordPress REST API and OAuth.",
+            "description": "Helper class for connecting to Quickbooks Online over OAuth.",
             "homepage": "https://github.com/zao-web/qbo-connect",
             "keywords": [
                 "json",
                 "wordpress",
                 "wp-api"
             ],
-            "time": "2017-08-13 00:55:38"
+            "time": "2017-08-13 01:33:34"
         }
     ],
     "packages-dev": [],
