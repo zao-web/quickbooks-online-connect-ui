@@ -1,6 +1,6 @@
 <?php
 
-use Zao\QBO_API\OAuth1\Connect;
+use Zao\QBO_API\Connect;
 
 /**
  * Quickbooks Online Connect UI Settings
@@ -104,7 +104,7 @@ class Zao_QBO_API_Settings {
  			$this->delete_all_and_redirect();
 		}
 
-		if ( $this->api()->key() ) {
+		if ( $this->api()->initiated ) {
 			$this->check_api();
 		} else {
 			$this->check_for_stored_connection_errors();
@@ -154,7 +154,7 @@ class Zao_QBO_API_Settings {
 	 */
 	public function admin_page_display() {
 		$args = array();
-		if ( $this->get( 'api_url' ) && ! $this->get( 'consumer_key' ) ) {
+		if ( ! $this->get( 'consumer_key' ) ) {
 			$args['save_button'] = __( 'Begin Authorization', 'qbo-connect-ui' );
 		}
 		?>
@@ -172,23 +172,23 @@ class Zao_QBO_API_Settings {
 			<div class="extra-detail">
 				<h3>OAuth endpoints</h3>
 				<dl>
-					<dt>Request Token Endpoint</dt>
-					<dd><code><?php echo esc_attr( $auth_urls->request ); ?></code></dd>
 					<dt>Authorize Endpoint</dt>
-					<dd><code><?php echo esc_attr( $auth_urls->authorize ); ?></code></dd>
+					<dd><code><?php echo esc_attr( $auth_urls->authorization_endpoint ); ?></code></dd>
 					<dt>Access Token Endpoint</dt>
-					<dd><code><?php echo esc_attr( $auth_urls->access ); ?></code></dd>
+					<dd><code><?php echo esc_attr( $auth_urls->token_endpoint ); ?></code></dd>
 				</dl>
 				<h3>OAuth credentials</h3>
 				<dl>
-					<dt>Client Key</dt>
+					<dt>Client ID</dt>
 					<dd><code><?php echo esc_attr( $this->api()->client_key ); ?></code></dd>
 					<dt>Client Secret</dt>
 					<dd><code><?php echo esc_attr( $this->api()->client_secret ); ?></code></dd>
 					<dt>Access Token</dt>
-					<dd><code><?php echo esc_attr( $creds->getIdentifier() ); ?></code></dd>
-					<dt>Access Token Secret</dt>
-					<dd><code><?php echo esc_attr( $creds->getSecret() ); ?></code></dd>
+					<dd><code><?php echo esc_attr( $creds->access_token ); ?></code></dd>
+					<dt>Refresh Token</dt>
+					<dd><code><?php echo esc_attr( $creds->refresh_token ); ?></code></dd>
+					<dt>Expires In</dt>
+					<dd><code><?php echo esc_attr( $creds->expires_in ); ?></code></dd>
 				</dl>
 			</div>
 		<?php endif;
@@ -231,98 +231,37 @@ class Zao_QBO_API_Settings {
 			add_action( 'cmb2_after_init', array( $this, 'process_fields' ), 11 );
 		}
 
-		$url          = $this->get_current_value( 'url', 'esc_url_raw' );
-		$api_url      = $this->get_current_value( 'api_url', 'esc_url_raw' );
-		$key          = $this->get_current_value( 'consumer_key', 'sanitize_text_field' );
-		$header_key   = $this->get_current_value( 'header_key', 'sanitize_text_field' );
-		$header_token = $this->get_current_value( 'header_token', 'sanitize_text_field' );
-
-		if ( $url && ! $this->api()->discovered() ) {
-			$result = $this->do_discovery( $url, $header_key, $header_token );
-
-			if ( ! is_wp_error( $result ) ) {
-				$api_url = $result;
-			}
-		}
-
-		$args = array(
-			'name' => __( 'WordPress Site URL', 'qbo-connect-ui' ),
-			'desc' => sprintf( __( 'Site must have the %s and %s plugins installed.', 'qbo-connect-ui' ), '<a target="_blank" href="https://github.com/WP-API/WP-API">WP-API</a>', '<a target="_blank" href="https://github.com/WP-API/OAuth1">OAuth1</a>' ),
-			'id'   => 'url',
-			'type' => 'text_url',
+		$cmb->add_field( array(
+			'name'       => __( 'Client ID', 'qbo-connect-ui' ),
+			'before_row' => '<p>' . __( 'The Redirect URI for the Intuit app registration needs to be: ', 'qbo-connect-ui' ) . '<br><code>' . $this->settings_url() . '</code></p>',
+			'id'         => 'consumer_key',
+			'type'       => 'text',
 			'attributes' => array(
-				'class' => 'cmb2-text-url regular-text',
+				'required' => 'required',
 			),
-		);
-
-		if ( empty( $url ) || empty( $api_url ) ) {
-			$args['before_row'] = '<h3>' . __( 'Step 1: Find the API', 'qbo-connect-ui' ) . '</h3>';
-			$args['name'] = __( 'Enter WordPress Site URL to start discovery', 'qbo-connect-ui' );
-		} elseif ( empty( $key ) ) {
-			$args['before_row'] = '<h3>' . __( 'Step 2: Input Credentials', 'qbo-connect-ui' ) . '</h3>';
-		}
-
-		$cmb->add_field( $args );
-
-		$cmb->add_field( array(
-			'id'   => 'api_url',
-			'type' => 'hidden',
-		) );
-
-		// No URL? then wait...
-		if ( ! empty( $url ) && ! empty( $api_url ) ) {
-			$cmb->add_field( array(
-				'name'       => __( 'Client Key', 'qbo-connect-ui' ),
-				'before_row' => '<p>' . __( 'If you haven\'t yet, you will need to <a target="_blank" href="'. trailingslashit( $url ) .'wp-admin/users.php?page=rest-oauth1-apps">register a new Application</a> on this site.', 'qbo-connect-ui' ) . '</p><p>' . __( 'The application callback URL for the application registration needs to be: ', 'qbo-connect-ui' ) . '<br><code>' . $this->settings_url() . '</code></p><p class="description"><a target="_blank" href="'. trailingslashit( $url ) .'wp-admin/users.php?page=rest-oauth1-apps">' . __( 'Manage registered applications', 'qbo-connect-ui' ) . '</a> or <a target="_blank" href="https://github.com/WP-API/client-cli#step-1-creating-a-consumer">' . __( 'learn how to get client credentials via WPCLI', 'qbo-connect-ui' ) . '</a>.</p>',
-				'id'         => 'consumer_key',
-				'type'       => 'text',
-				'attributes' => array(
-					'required' => 'required',
-				),
-			) );
-
-			$cmb->add_field( array(
-				'name' => __( 'Client Secret', 'qbo-connect-ui' ),
-				'id'   => 'consumer_secret',
-				'type' => 'text',
-				'attributes' => array(
-					'required' => 'required',
-				),
-			) );
-		}
-
-		$header_key   = $this->get_current_value( 'header_key', 'sanitize_text_field' );
-		$header_token = $this->get_current_value( 'header_token', 'sanitize_text_field' );
-
-		$cmb->add_field( array(
-			'before_row' => '<p class="toggle-optional-headers"><label><input type="checkbox" id="toggle-optional-headers" '. checked( $header_key || $header_token, 1, false ) .'/>' . __( 'Toggle Optional Headers', 'domain' ) . '</label></p><section class="optional-headers ' . ( $header_key || $header_token ? '' : 'hidden"' ) . '">',
-			'name'   => __( 'Optional Headers', 'qbo-connect-ui' ),
-			'desc'   => __( 'If the WordPress API requires a Header Key/Token for access, i.e. <a href="https://github.com/WebDevStudios/WDS-Allow-REST-API">WDS Allow REST API</a>.', 'qbo-connect-ui' ),
-			'id'     => 'header_title',
-			'type'   => 'title',
 		) );
 
 		$cmb->add_field( array(
-			'name' => __( 'Header Key', 'qbo-connect-ui' ),
-			'id'   => 'header_key',
+			'name' => __( 'Client Secret', 'qbo-connect-ui' ),
+			'id'   => 'consumer_secret',
 			'type' => 'text',
+			'attributes' => array(
+				'required' => 'required',
+			),
 		) );
 
 		$cmb->add_field( array(
-			'name'  => __( 'Header Token', 'qbo-connect-ui' ),
-			'id'    => 'header_token',
-			'type'  => 'text',
-			'after_row' => '</section>
-			<script type="text/javascript">
-				jQuery( function( $ ) {
-					var $checkbox = $( document.getElementById( "toggle-optional-headers" ) );
-					$checkbox.on( "change", function() {
-						$( ".optional-headers" )[ $checkbox.is( ":checked" ) ? "removeClass" : "addClass" ]( "hidden" );
-					} );
-				});
-			</script>
-			',
+			'name'       => __( 'Sandbox Mode?', 'qbo-connect-ui' ),
+			'desc'       => __( 'Used for testing.', 'qbo-connect-ui' ),
+			'id'         => 'sandbox',
+			'type'       => 'checkbox',
+			'default_cb' => array( $this, 'checked_by_default' ),
 		) );
+	}
+
+	public function checked_by_default() {
+		$all = $this->get( 'all' );
+		return isset( $all['sandbox'] ) ? empty( $all['sandbox'] ) : true;
 	}
 
 	/**
@@ -355,25 +294,8 @@ class Zao_QBO_API_Settings {
 	public function process_fields() {
 		$presave_key = $this->get( 'consumer_key' );
 
-		if ( ! $this->get( 'url' ) && empty( $_POST['url'] ) ) {
-			$_POST['api_url'] = null;
+		if ( empty( $_POST['consumer_key'] ) ) {
 			$this->api()->delete_option();
-		}
-
-		if ( $this->get( 'url' ) && empty( $_POST['url'] ) || empty( $_POST['consumer_key'] ) ) {
-			$this->api()->delete_option();
-		}
-
-		$api_url = false;
-		if ( ! $this->get( 'api_url' ) && ! empty( $_POST['url'] ) ) {
-
-			$header_key   = sanitize_text_field( $_POST['header_key'] );
-			$header_token = sanitize_text_field( $_POST['header_token'] );
-			$result = $this->do_discovery( $_POST['url'], $header_key, $header_token );
-
-			if ( ! is_wp_error( $result ) ) {
-				$_POST['api_url'] = $api_url = $result;
-			}
 		}
 
 		// Save the fields
@@ -529,33 +451,11 @@ class Zao_QBO_API_Settings {
 			$this->api()->redirect_to_login();
 		}
 
-		$user = $this->get_user();
-		$desc = $user ? $this->get_api_description() : false;
+		$company = $this->get_company_info();
 
-		if ( $user && $desc ) {
-			return $this->success_message( $user, $desc );
+		if ( $company ) {
+			return $this->success_message( $company );
 		}
-	}
-
-	/**
-	 * Get the API Description object
-	 *
-	 * @since  0.2.0
-	 *
-	 * @return mixed  Description object or error.
-	 */
-	public function get_api_description() {
-		$desc = $this->api()->get_api_description();
-
-		if ( is_wp_error( $desc ) ) {
-			if ( 'wp_rest_api_missing_client_data' == $desc->get_error_code() ) {
-				return $this->need_to_authenticate_message( $desc );
-			}
-
-			return $this->oops_error_message( $desc );
-		}
-
-		return $desc;
 	}
 
 	/**
@@ -565,19 +465,19 @@ class Zao_QBO_API_Settings {
 	 *
 	 * @return mixed  User object or WP_Error object.
 	 */
-	public function get_user() {
-		$user = $this->api()->get_user();
+	public function get_company_info() {
+		$company = $this->api()->get_company_info();
 
-		if ( is_wp_error( $user ) ) {
+		if ( is_wp_error( $company ) ) {
 
-			if ( 'wp_rest_api_not_authorized' == $user->get_error_code() ) {
-				return $this->need_to_authenticate_message( $user );
+			if ( 'wp_rest_api_not_authorized' == $company->get_error_code() ) {
+				return $this->need_to_authenticate_message( $company );
 			}
 
-			return $this->oops_error_message( $user );
+			return $this->oops_error_message( $company );
 		}
 
-		return $user;
+		return $company;
 	}
 
 	/**
@@ -606,88 +506,50 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
-	 * Output the authenticated user's detail.
-	 *
-	 * @since  0.2.0
-	 *
-	 * @return string  HTML
-	 */
-	public function output_user() {
-		$user = $this->api()->get_user();
-		$html = '
-		<table class="wp-list-table widefat user-card">
-			<thead>
-				<tr>
-					<th>' . __( 'Authenticated User', 'qbo-connect-ui' ) . '</th>
-					<th>' . __( 'Details', 'qbo-connect-ui' ) . '</th>
-					<th>' . __( 'Description', 'qbo-connect-ui' ) . '</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>
-						<div class="avatar"><img src="' . esc_attr( $user->imageUrl ) .'" /></div>
-						<p>' . esc_attr( $user->name ) .' (<code>' . esc_attr( $user->nickname ) .'</code>) <a href="' . esc_attr( $user->urls['permalink'] ) .'" target="_blank">' . __( 'View posts', 'qbo-connect-ui' ) . '</a></p>
-					</td>
-					<td>
-						<dl>
-							<dt>' . __( 'First Name', 'qbo-connect-ui' ) . '</dt>
-							<dd>' . ( ! empty( $user->firstName ) ? esc_attr( $user->firstName ) : '' ) .'</dd>
-							<dt>' . __( 'Last Name', 'qbo-connect-ui' ) . '</dt>
-							<dd>' . ( ! empty( $user->lastName ) ? esc_attr( $user->lastName ) : '' ) .'</dd>
-							<dt>' . __( 'Email', 'qbo-connect-ui' ) . '</dt>
-							<dd>' . ( ! empty( $user->email ) ? esc_attr( $user->email ) : '' ) .'</dd>
-						</dl>
-					</td>
-					<td>' . ( ! empty( $user->description ) ? esc_attr( $user->description ) : '' ) .'</dd>
-				</tr>
-			</tbody>
-		</table>
-		';
-		return $html;
-	}
-
-	/**
 	 * Register a notice for a successful API connection, and display API data.
 	 *
 	 * @since  0.1.0
 	 *
 	 * @return bool  Successful connection.
 	 */
-	public function success_message( $user, $desc ) {
+	public function success_message( $company ) {
+
+		$props = array();
+		foreach ( get_object_vars( $company ) as $prop_name => $prop_value ) {
+			$props[] = '<tr><td>'. print_r( $prop_name, true ) .'</td><td>'. print_r( $prop_value, true ) .'</td></tr>';
+		}
+
 		$message = '
 		<br>
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th>' . __( 'Connected Site Name', 'qbo-connect-ui' ) . '</th>
-					<th>' . __( 'Connected Site Description', 'qbo-connect-ui' ) . '</th>
+					<th>' . __( 'Connected Company Name', 'qbo-connect-ui' ) . '</th>
+					<th>' . __( 'Connected Company ID', 'qbo-connect-ui' ) . '</th>
 				</tr>
 			</thead>
 			<tbody>
 				<tr>
-					<td>'. esc_html( $desc->name ) .'</td>
-					<td>'. esc_html( $desc->description ) .'</td>
+					<td>'. esc_html( $company->CompanyName ) .'</td>
+					<td>'. esc_html( $company->Id ) .'</td>
 				</tr>
 			</tbody>
 		</table>
 		<br>
-		'. $this->output_user( $user ) .'
-		<br>
 		<table class="wp-list-table widefat">
 			<thead>
 				<tr>
-					<th>'. __( 'Available Routes:', 'qbo-connect-ui' ) .'</th>
+					<th>'. __( 'Company Property:', 'qbo-connect-ui' ) .'</th>
+					<th>'. __( 'Company Property Value:', 'qbo-connect-ui' ) .'</th>
 				</tr>
 			</thead>
 			<tbody>
-				<tr><td><xmp>'. print_r( array_keys( get_object_vars( $desc->routes ) ), true ) .'</xmp></td></tr>
+				'. implode( "\n", $props ) .'
 			</tbody>
 		</table>
 		<br>
 		<p><a class="button-secondary" href="'. $this->settings_url() .'">' . __( 'Dismiss', 'qbo-connect-ui' ) . '</a>&nbsp;&nbsp;<a class="button-secondary" href="'. $this->reauth_url() .'">' . __( 'Re-authenticate', 'qbo-connect-ui' ) . '</a></p>
 		';
-
 
 		$this->register_notice( $message, false );
 
@@ -901,32 +763,12 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
-	 * Wrapper for the api do_discovery method which sets the headers if we have them.
-	 *
-	 * @since  0.2.3
-	 *
-	 * @param  string  $url          URL for discovery
-	 * @param  boolean $header_key   Value for header key if we have it
-	 * @param  boolean $header_token Value for header token if we have it
-	 *
-	 * @return mixed                 Result of Zao\QBO_API\OAuth1\Connect::do_discovery
-	 */
-	public function do_discovery( $url, $header_key = false, $header_token = false ) {
-		$api = $this->api();
-		if ( $header_key && $header_token ) {
-			$api->set_headers( array( $header_key => $header_token ) );
-		}
-
-		return $api->do_discovery( $url );
-	}
-
-	/**
 	 * Return (and initiate) API object.
 	 *
-	 * @return Zao\QBO_API\OAuth1\Connect
+	 * @return Zao\QBO_API\Connect
 	 */
 	public function api() {
-		if ( $this->api->key() && $this->api->client_key ) {
+		if ( $this->api->initiated && $this->api->client_key ) {
 			// Has already been initated
 			return $this->api;
 		}
@@ -935,29 +777,18 @@ class Zao_QBO_API_Settings {
 		$all = is_array( $all ) ? array_filter( $all ) : false;
 
 		// Make sure we have the bare minimums saved for making a connection.
-		if (
-			empty( $all )
-			|| ! $this->get( 'api_url' )
-		) {
-			if ( $this->get( 'header_key' ) && $this->get( 'header_token' ) ) {
-				$this->api->set_headers( array( $this->get( 'header_key' ) => $this->get( 'header_token' ) ) );
-			}
-
+		if ( empty( $all ) ) {
 			return $this->api;
 		}
 
 		$args['client_key']    = $this->get( 'consumer_key' );
 		$args['client_secret'] = $this->get( 'consumer_secret' );
-		$args['api_url']       = $this->get( 'api_url' );
-		// $args['auth_urls']  = get_option( $this->key . '_urls' );
+		$args['sandbox']       = !! $this->get( 'sandbox' );
 		$args['callback_uri']  = $this->settings_url();
-
-		if ( $this->get( 'header_key' ) && $this->get( 'header_token' ) ) {
-			$args['headers'] = array( $this->get( 'header_key' ) => $this->get( 'header_token' ) );
-		}
 
 		// Initate the API.
 		$this->api->init( $args );
+		$this->api->api_url;
 
 		if ( $this->api->is_authorizing() ) {
 			$this->redirect( array( 'check_credentials' => 1 ) );

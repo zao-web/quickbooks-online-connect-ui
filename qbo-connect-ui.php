@@ -90,7 +90,7 @@ class Zao_QBO_API_Connect_UI {
 
 	/**
 	 * Whether plugin should operate on the network settings level.
-	 * Enabled via the Zao_QBO_API_NETWORK_SETTINGS constant
+	 * Enabled via the ZAO_QBO_API_NETWORK_SETTINGS constant
 	 *
 	 * @var bool
 	 * @since  0.1.0
@@ -142,7 +142,7 @@ class Zao_QBO_API_Connect_UI {
 		$this->basename   = plugin_basename( __FILE__ );
 		$this->url        = plugin_dir_url( __FILE__ );
 		$this->path       = plugin_dir_path( __FILE__ );
-		$this->is_network = apply_filters( 'qbo_connect_ui_is_network', defined( 'Zao_QBO_API_NETWORK_SETTINGS' ) );
+		$this->is_network = apply_filters( 'qbo_connect_ui_is_network', defined( 'ZAO_QBO_API_NETWORK_SETTINGS' ) );
 
 		$this->plugin_classes();
 	}
@@ -159,7 +159,7 @@ class Zao_QBO_API_Connect_UI {
 			'transients_class' => 'Zao_QBO_API_Storage_Transients',
 		) : array();
 
-		$this->api = new Zao\QBO_API\OAuth1\Connect( $storage_classes );
+		$this->api = new Zao\QBO_API\Connect( $storage_classes );
 
 		$class = $this->is_network ? 'Zao_QBO_API_Network_Settings' : 'Zao_QBO_API_Settings';
 		$this->settings = new $class( $this->basename, $this->api );
@@ -205,7 +205,7 @@ class Zao_QBO_API_Connect_UI {
 
 		// If network-level, but not network-activated, it fails
 		if ( $this->is_network && ! is_plugin_active_for_network( $this->basename ) ) {
-			$this->activation_error = sprintf( __( "Quickbooks Online Connect UI has been designated as a network-only plugin (via the <code>'qbo_connect_ui_is_network'</code> filter or the <code>'Zao_QBO_API_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'qbo-connect-ui' ), admin_url( 'plugins.php' ) );
+			$this->activation_error = sprintf( __( "Quickbooks Online Connect UI has been designated as a network-only plugin (via the <code>'qbo_connect_ui_is_network'</code> filter or the <code>'ZAO_QBO_API_NETWORK_SETTINGS'</code> constant), so it has been <a href=\"%s\">deactivated</a>. Please try network-activating.", 'qbo-connect-ui' ), admin_url( 'plugins.php' ) );
 
 			return false;
 		}
@@ -361,7 +361,7 @@ function qbo_connect_ui_api_object() {
 	$settings = qbo_connect_ui()->settings;
 	$api = $settings->api();
 
-	if ( '' === $api->key() ) {
+	if ( ! $api->initiated ) {
 		$error = sprintf( __( 'API connection is not properly authenticated. Authenticate via the <a href="%s">settings page</a>.', 'qbo-connect-ui' ), $settings->settings_url() );
 
 		return new WP_Error( 'qbo_connect_ui_api_fail', $error );
@@ -378,7 +378,7 @@ function qbo_connect_ui_api_object() {
  * `$api = apply_filters( 'qbo_connect_ui_api_object', null );`
  *
  * Then check for Connect or WP_Error value before proceeding:
- * `if ( is_a( $api, 'Zao\QBO_API\OAuth1\Connect' ) ) { $schema = $api->auth_get_request(); }`
+ * `if ( $api instanceof \Zao\QBO_API\Connect ) { $company = $api->get_company_info(); }`
  *
  */
 add_filter( 'qbo_connect_ui_api_object', 'qbo_connect_ui_api_object' );

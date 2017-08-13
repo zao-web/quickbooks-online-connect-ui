@@ -47,7 +47,7 @@ msgid "Step 2: Input Credentials"
 msgstr ""
 
 #: includes/settings.php:277
-msgid "Client Key"
+msgid "Client ID"
 msgstr ""
 
 #: includes/settings.php:278
