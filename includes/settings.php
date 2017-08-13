@@ -120,7 +120,7 @@ class Zao_QBO_API_Settings {
 	public function add_settings_page() {
 		$this->page_hook = add_menu_page(
 			$this->title,
-			$this->title,
+			__( 'QB Online Connect', 'qbo-connect-ui' ),
 			'manage_options',
 			$this->key,
 			array( $this, 'admin_page_display' )
