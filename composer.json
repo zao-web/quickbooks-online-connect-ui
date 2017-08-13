@@ -23,7 +23,7 @@
         "webdevstudios/cmb2": "dev-master"
     },
     "autoload": {
-        "classmap": ["includes", "vendor/webdevstudios/cmb2/"]
+        "classmap": ["includes"]
     },
     "minimum-stability": "dev"
 }
