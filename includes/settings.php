@@ -387,6 +387,11 @@ class Zao_QBO_API_Settings {
 			return;
 		}
 
+		// Refresh token if requested.
+		if ( isset( $_GET['refresh_token'] ) ) {
+			return $this->refresh_token_and_redirect();
+		}
+
 		// Dismiss authentication errors if requested.
 		if ( isset( $_GET['dismiss_errrors'] ) ) {
 			return $this->dismiss_errrors_and_redirect();
@@ -436,6 +441,18 @@ class Zao_QBO_API_Settings {
 	 */
 	public function dismiss_errrors_and_redirect() {
 		$this->api()->delete_stored_error();
+		$this->redirect();
+	}
+
+	/**
+	 * Deletes stored API connection errors and redirects, removing any query params.
+	 *
+	 * @since  0.1.0
+	 *
+	 * @return void
+	 */
+	public function refresh_token_and_redirect() {
+		$this->api()->request_refresh_token();
 		$this->redirect();
 	}
 
@@ -617,6 +634,8 @@ class Zao_QBO_API_Settings {
 		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
 
 		$check_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a></form>';
+		$check_button .= '<p>' . $this->get_refresh_token_button() . '</p>';
+
 		// Add a check-api button to the form
 		$format = str_replace(
 			'</form>',
@@ -625,6 +644,18 @@ class Zao_QBO_API_Settings {
 		);
 
 		return $format;
+	}
+
+	/**
+	 * Add a "refresh token" button next to the "check credentials" button.
+	 *
+	 * @since  0.1.0
+	 * @return string
+	 */
+	public function get_refresh_token_button() {
+		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'refresh_token', 1, remove_query_arg( 'check_credentials' ) ) ) );
+
+		return '<a class="" href="'. $url .'">' . __( 'Refresh Authentication Token', 'qbo-connect-ui' ) . '</a></form>';
 	}
 
 	/**
