@@ -2,7 +2,7 @@
   "generator-plugin-wp": {
     "name": "Quickbooks Online Connect UI",
     "homepage": "http://zao.is",
-    "description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
+    "description": "Provides UI for connecting to Quickbooks Online over OAuth.",
     "version": "0.1.0",
     "author": "Zao",
     "authoremail": "contact@zao.is",

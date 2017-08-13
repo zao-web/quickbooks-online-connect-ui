@@ -1,0 +1,173 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
+    ],
+    "hash": "76e2dcdf7009e76a381c34cac75b5685",
+    "content-hash": "e58065f7aca9ef32d5f8504503760dd7",
+    "packages": [
+        {
+            "name": "quickbooks/v3-php-sdk",
+            "version": "v3.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/intuit/QuickBooks-V3-PHP-SDK.git",
+                "reference": "10fd3a5079d0c901697e2a72e3af219971eece94"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/intuit/QuickBooks-V3-PHP-SDK/zipball/10fd3a5079d0c901697e2a72e3af219971eece94",
+                "reference": "10fd3a5079d0c901697e2a72e3af219971eece94",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "QuickBooksOnline\\API\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "hlu2",
+                    "email": "Hao_Lu@intuit.com"
+                }
+            ],
+            "description": "The Official PHP SDK for QuickBooks Online Accounting API",
+            "homepage": "http://developer.intuit.com",
+            "keywords": [
+                "api",
+                "http",
+                "quickbooks",
+                "rest",
+                "smallbusiness"
+            ],
+            "time": "2017-07-20 23:32:36"
+        },
+        {
+            "name": "webdevstudios/cmb2",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/CMB2/CMB2.git",
+                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/d9d23e090fb2ae93883035c04796836f7e3c5a19",
+                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "WebDevStudios",
+                    "email": "contact@webdevstudios.com",
+                    "homepage": "https://github.com/WebDevStudios",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Justin Sternberg",
+                    "email": "justin@dsgnwrks.pro",
+                    "homepage": "https://dsgnwrks.pro",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Zao",
+                    "email": "office@zao.com",
+                    "homepage": "http://zao.is",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CMB2 is a metabox, custom fields, and forms library for WordPress that will blow your mind.",
+            "homepage": "https://github.com/CMB2/CMB2",
+            "keywords": [
+                "metabox",
+                "plugin",
+                "wordpress"
+            ],
+            "time": "2017-08-08 14:50:22"
+        },
+        {
+            "name": "zao-web/qbo-connect",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zao-web/quickbooks-online-connect.git",
+                "reference": "681540c25520cc483977bd49a4aaf1c9f8c9c087"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/681540c25520cc483977bd49a4aaf1c9f8c9c087",
+                "reference": "681540c25520cc483977bd49a4aaf1c9f8c9c087",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.3",
+                "quickbooks/v3-php-sdk": "^3.3"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "lib"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0+"
+            ],
+            "authors": [
+                {
+                    "name": "Zao",
+                    "email": "jt@zao.is",
+                    "homepage": "https://github.com/zao-web",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Helper class for connecting from one WordPress installation to another via the WordPress REST API and OAuth.",
+            "homepage": "https://github.com/zao-web/qbo-connect",
+            "keywords": [
+                "json",
+                "wordpress",
+                "wp-api"
+            ],
+            "time": "2017-08-13 00:55:38"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "dev",
+    "stability-flags": {
+        "zao-web/qbo-connect": 20,
+        "webdevstudios/cmb2": 20
+    },
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">5.3"
+    },
+    "platform-dev": []
+}

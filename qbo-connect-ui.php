@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Quickbooks Online Connect UI
  * Plugin URI:  http://zao.is
- * Description: Provides UI for connecting to Quickbooks Online over OAuth1.
+ * Description: Provides UI for connecting to Quickbooks Online over OAuth.
  * Version:     0.2.6
  * Author:      Zao
  * Author URI:  http://zao.is
@@ -35,7 +35,9 @@
  */
 
 // include composer autoloader (make sure you run `composer install`!)
-require_once Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' );
+if ( file_exists( Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' ) ) ) {
+	require_once Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' );
+}
 
 /**
  * Main initiation class

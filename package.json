@@ -2,7 +2,7 @@
 	"name": "qbo-connect-ui",
 	"title": "Quickbooks Online Connect UI",
 	"version": "0.2.6",
-	"description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
+	"description": "Provides UI for connecting to Quickbooks Online over OAuth.",
 	"author": {
 		"name": "Zao",
 		"url": "http://zao.is"

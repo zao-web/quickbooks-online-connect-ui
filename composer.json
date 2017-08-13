@@ -1,7 +1,7 @@
 {
     "name": "zao-web/qbo-connect-ui",
     "type": "wordpress-plugin",
-    "description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
+    "description": "Provides UI for connecting to Quickbooks Online over OAuth.",
     "license": "GPL-2.0+",
     "authors": [
         {
@@ -19,12 +19,12 @@
     },
     "require": {
         "php": ">5.3",
-        "zao-web/qbo-connect": "^v0.2.6",
-        "cmb2/cmb2": "^v2.2.5.2"
+        "zao-web/qbo-connect": "dev-master",
+        "webdevstudios/cmb2": "dev-master"
     },
     "autoload": {
         "classmap": ["vendor/zao-web/qbo-connect/qbo-connect.php","includes"],
-        "files": ["vendor/cmb2/cmb2/init.php"]
+        "files": ["vendor/webdevstudios/cmb2/init.php"]
     },
     "minimum-stability": "dev"
 }

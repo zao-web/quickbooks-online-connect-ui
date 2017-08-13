@@ -953,7 +953,7 @@ msgstr ""
 
 #. Description of the plugin/theme
 msgid ""
-"Provides UI for connecting to Quickbooks Online over OAuth1."
+"Provides UI for connecting to Quickbooks Online over OAuth."
 msgstr ""
 
 #. Author of the plugin/theme

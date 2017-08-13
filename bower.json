@@ -1,6 +1,6 @@
 {
   "name": "qbo-connect-ui",
-  "description": "Provides UI for connecting to Quickbooks Online over OAuth1.",
+  "description": "Provides UI for connecting to Quickbooks Online over OAuth.",
   "license": "GPLv2",
   "authors": [
     "Zao"
