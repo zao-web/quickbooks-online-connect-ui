@@ -164,39 +164,14 @@ class Zao_QBO_API_Settings {
 	 * @return void
 	 */
 	public function admin_page_display() {
-		$args = array();
-		$btn_class = 'button-primary';
-
-		if ( ! $this->get( 'consumer_key' ) ) {
-			$args['save_button'] = __( 'Begin Authorization', 'qbo-connect-ui' );
-			$btn_class = 'qb-button';
-		}
-
-		if ( ! $this->api()->connected() ) {
-			wp_enqueue_script(
-				'qbo-connect-ui',
-				Zao_QBO_API_Connect_UI::url( 'assets/js/script.js' ),
-				array( 'jquery' ),
-				Zao_QBO_API_Connect_UI::VERSION,
-				true
-			);
-
-			wp_localize_script( 'qbo-connect-ui', 'Zao_QBO_API_Connect_UI', array(
-				'l10n' => array(
-					'copy'   => esc_html__( 'Copy', 'qbo-connect-ui' ),
-					'copied' => esc_html__( 'Copied!', 'qbo-connect-ui' ),
-				),
-			) );
-		}
-
-		$args['form_format'] = '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s<p class="submit"><input type="submit" name="submit-cmb" value="%4$s" class="' . $btn_class . '"></p></form>';
+		$connected = $this->api()->connected();
 		?>
-		<div class="wrap cmb2-options-page <?php echo $this->key; ?>">
+		<div class="wrap cmb2-options-page qb-connect-settings-page <?php echo $this->key; ?>">
 			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-			<?php cmb2_metabox_form( $this->metabox_id, $this->key, $args ); ?>
+			<?php echo $this->get_form_output( $connected ); ?>
 		</div>
 
-		<?php if ( $this->api()->connected() ) :
+		<?php if ( $connected ) :
 			$creds     = $this->api()->get_option( 'token_credentials' );
 			$auth_urls = $this->api()->auth_urls;
 			?>
@@ -228,6 +203,51 @@ class Zao_QBO_API_Settings {
 		<?php endif;
 	}
 
+	public function get_form_output( $connected ) {
+		$connect_button = '';
+		$button_class = 'button-primary';
+
+		if ( ! $connected ) {
+			wp_enqueue_script(
+				'qbo-connect-ui',
+				Zao_QBO_API_Connect_UI::url( 'assets/js/script.js' ),
+				array( 'jquery' ),
+				Zao_QBO_API_Connect_UI::VERSION,
+				true
+			);
+
+			wp_localize_script( 'qbo-connect-ui', 'Zao_QBO_API_Connect_UI', array(
+				'l10n' => array(
+					'copy'   => esc_html__( 'Copy', 'qbo-connect-ui' ),
+					'copied' => esc_html__( 'Copied!', 'qbo-connect-ui' ),
+				),
+			) );
+
+			if ( $this->get( 'consumer_key' ) ) {
+				$connect_url = $this->api()->get_full_authorization_url();
+				if ( ! is_wp_error( $connect_url ) ) {
+					$connect_button = '{{CONNECTBUTTON}}';
+				}
+			} else {
+				$button_class = 'qb-button';
+			}
+		}
+
+		$form_output = cmb2_get_metabox_form( $this->metabox_id, $this->key, array(
+			'form_format' => '<form class="cmb-form" method="post" id="%1$s" enctype="multipart/form-data" encoding="multipart/form-data"><input type="hidden" name="object_id" value="%2$s">%3$s' . $connect_button . '<p class="submit"><input type="submit" name="submit-cmb" value="%4$s" class="' . $button_class . '"></p></form>'
+		) );
+
+		if ( $connect_button ) {
+			$form_output = str_replace(
+				'{{CONNECTBUTTON}}',
+				'<p><a href="' . esc_url( $connect_url ) . '" class="qb-button">' . __( 'Begin Authorization', 'qbo-connect-ui' ) . '</a></p>',
+				$form_output
+			);
+		}
+
+		return $form_output;
+	}
+
 	/**
 	 * Register the CMB2 instance and fields to the settings page.
 	 *
@@ -235,8 +255,10 @@ class Zao_QBO_API_Settings {
 	 * @return void
 	 */
 	public function register_settings_page_metabox() {
-		// Add a "reset" button next to the "save" button.
-		add_filter( 'cmb2_get_metabox_form_format', array( $this, 'add_reset_connection_button' ), 10, 2 );
+		if ( $this->get( 'consumer_key' ) || $this->get( 'consumer_secret' ) ) {
+			// Add a "reset" button next to the "save" button.
+			add_filter( 'cmb2_get_metabox_form_format', array( $this, 'add_reset_connection_button' ), 10, 2 );
+		}
 
 		$cmb = new_cmb2_box( array(
 			'id'         => $this->metabox_id,
@@ -672,14 +694,14 @@ class Zao_QBO_API_Settings {
 	 * @param string  $object_id CMB2 object ID
 	 */
 	public function add_check_connection_button( $format, $object_id ) {
-		if ( $object_id != $this->key ) {
+		if ( $object_id != $this->key || ! $this->api()->connected() ) {
 			return $format;
 		}
 
 		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
 
-		$check_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a></p></form>';
-		$check_button .= '<p>' . $this->get_refresh_token_button() . '</p>';
+		$check_button = '<a class="qb-action-link" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a>';
+		$check_button .= '' . $this->get_refresh_token_button() . '</p></form>';
 
 		$format = str_replace(
 			'</p></form>',
@@ -699,7 +721,7 @@ class Zao_QBO_API_Settings {
 	public function get_refresh_token_button() {
 		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'refresh_token', 1, remove_query_arg( 'check_credentials' ) ) ) );
 
-		return '<a class="" href="'. $url .'">' . __( 'Refresh Authentication Token', 'qbo-connect-ui' ) . '</a>';
+		return '<a class="qb-action-link" href="'. $url .'">' . __( 'Refresh Authentication Token', 'qbo-connect-ui' ) . '</a>';
 	}
 
 	/**
@@ -717,7 +739,7 @@ class Zao_QBO_API_Settings {
 
 		$reset_url = str_replace( '%', '%%', esc_url( $this->reset_url() ) );
 
-		$reset_button = '&nbsp;&nbsp;&nbsp;<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'qbo-connect-ui' ) . '</a></p></form>';
+		$reset_button = '<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'qbo-connect-ui' ) . '</a></p></form>';
 		// Add a check-api button to the form
 		$format = str_replace(
 			'</p></form>',
@@ -860,6 +882,7 @@ class Zao_QBO_API_Settings {
 		$args['client_secret'] = $this->get( 'consumer_secret' );
 		$args['sandbox']       = !! $this->get( 'sandbox' );
 		$args['callback_uri']  = $this->settings_url();
+		$args['autoredirect_authoriziation']  = false;
 
 		// Initate the API.
 		$this->api->init( $args );

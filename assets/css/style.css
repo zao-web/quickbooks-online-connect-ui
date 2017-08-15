@@ -1,23 +1,33 @@
 .qb-button {
 	background: #fbfbfb url( '../images/C2QB_white_btn_lg_default.png' );
-	-webkit-appearance: none;
-	background-size: 100% auto;
+}
+
+.qb-button:hover {
+	background: #ffffff url( '../images/C2QB_white_btn_lg_hover.png' );
+}
+
+.qb-button, .qb-button:hover, .qb-button:active, .qb-button:focus, .qb-button:visited {
+	display: block;
 	color: transparent;
+	background-size: 100% auto;
+	text-decoration: none;
 	border: 0;
 	height: 38px;
 	width: 220px;
+	margin-right: 5px;
 }
-.qb-button:hover {
-	background: #ffffff url( '../images/C2QB_white_btn_lg_hover.png' );
-	background-size: 100% auto;
+
+input.qb-button {
 	cursor: pointer;
+	margin-bottom: 10px;
 }
-.qb-button + .button-secondary {
-	margin-top: 2px;
+
+.qb-connect-settings-page .submit .button-primary, .qb-connect-settings-page .submit .button-secondary, .qb-connect-settings-page .qb-action-link {
+	margin-right: 10px;
 }
 
 /* This causes the hover image to load before hovering, to help with FOUT. */
-.cmb2-options-page:after {
+.qb-connect-settings-page:after {
 	display: none;
 	content: url( '../images/C2QB_white_btn_lg_hover.png' );
 }
@@ -26,7 +36,7 @@
 	color: green;
 }
 
-.cmb2-options-page .cmb2-wrap .cmb-type-title.qb-clipboard-redirect-uri-helper {
+.qb-connect-settings-page .cmb2-wrap .cmb-type-title.qb-clipboard-redirect-uri-helper {
 	margin-top: 0;
 }
 
