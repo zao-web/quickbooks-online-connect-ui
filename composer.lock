@@ -117,12 +117,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/zao-web/quickbooks-online-connect.git",
-                "reference": "06931dbbe95cfe8b7b82abb1e020c9476d3536b3"
+                "reference": "f86eeabe7762346d72f6e645bb52e98910c10289"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/06931dbbe95cfe8b7b82abb1e020c9476d3536b3",
-                "reference": "06931dbbe95cfe8b7b82abb1e020c9476d3536b3",
+                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/f86eeabe7762346d72f6e645bb52e98910c10289",
+                "reference": "f86eeabe7762346d72f6e645bb52e98910c10289",
                 "shasum": ""
             },
             "require": {
@@ -154,7 +154,7 @@
                 "wordpress",
                 "wp-api"
             ],
-            "time": "2017-08-13 01:33:34"
+            "time": "2017-08-15 14:30:23"
         }
     ],
     "packages-dev": [],
