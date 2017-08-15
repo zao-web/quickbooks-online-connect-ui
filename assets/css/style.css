@@ -1,0 +1,35 @@
+.qb-button {
+	background: #fbfbfb url( '../images/C2QB_white_btn_lg_default.png' );
+	-webkit-appearance: none;
+	background-size: 100% auto;
+	color: transparent;
+	border: 0;
+	height: 38px;
+	width: 220px;
+}
+.qb-button:hover {
+	background: #ffffff url( '../images/C2QB_white_btn_lg_hover.png' );
+	background-size: 100% auto;
+	cursor: pointer;
+}
+.qb-button + .button-secondary {
+	margin-top: 2px;
+}
+
+/* This causes the hover image to load before hovering, to help with FOUT. */
+.cmb2-options-page:after {
+	display: none;
+	content: url( '../images/C2QB_white_btn_lg_hover.png' );
+}
+
+.qp-connected-title {
+	color: green;
+}
+
+.cmb2-options-page .cmb2-wrap .cmb-type-title.qb-clipboard-redirect-uri-helper {
+	margin-top: 0;
+}
+
+#clipboard-redirect-uri {
+	color: #444;
+}
