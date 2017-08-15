@@ -16,12 +16,10 @@ Provides UI for connecting to Quickbooks Online over OAuth. This plugin is a UI 
 
 ### Manual Installation
 
-1. Upload the entire `/qbo-connect-ui` directory to the `/wp-content/plugins/` directory.
-2. Run `composer install` inside the `/wp-content/plugins/qbo-connect-ui` directory.
+1. Upload the entire `/quickbooks-online-connect-ui` directory or clone this repository to the `/wp-content/plugins/` directory.
+2. Run `composer install` inside the `/wp-content/plugins/quickbooks-online-connect-ui` directory.
 3. Activate Quickbooks Online Connect UI through the 'Plugins' menu in WordPress.
 4. Update the connection settings.
-
-To avoid step 2, [download this zip](https://raw.githubusercontent.com/zao-web/qbo-connect-UI/master/qbo-connect-ui.zip), unzip the file and follow steps 1, 3, and 4.
 
 ## Screenshots
 
