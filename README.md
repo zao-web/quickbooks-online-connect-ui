@@ -10,7 +10,7 @@
 
 ## Description
 
-Provides UI for connecting to Quickbooks Online over OAuth. This plugin is a UI wrapper for [Quickbooks Online Connect](https://github.com/zao-web/qbo-connect).
+Provides UI for connecting to Quickbooks Online over OAuth. This plugin is a UI wrapper for [Quickbooks Online Connect](https://github.com/zao-web/qbo-connect) (which is a WordPress wrapper for the [QuickBooks API PHP SDK](https://github.com/intuit/QuickBooks-V3-PHP-SDK/)).
 
 Once the connection is initated, you can use the underlying connect library. View this plugin's [example file](https://github.com/zao-web/quickbooks-online-connect-ui/blob/master/example.php) or the connect library's [example file](https://github.com/zao-web/quickbooks-online-connect/blob/master/example.php).
 
