@@ -39,6 +39,10 @@ if ( file_exists( Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' ) ) ) {
 	require_once Zao_QBO_API_Connect_UI::dir( 'vendor/autoload.php' );
 }
 
+if ( file_exists( Zao_QBO_API_Connect_UI::dir( 'vendor/zao-web/qbo-connect/qbo-connect.php' ) ) ) {
+	require_once Zao_QBO_API_Connect_UI::dir( 'vendor/zao-web/qbo-connect/qbo-connect.php' );
+}
+
 /**
  * Main initiation class
  *
