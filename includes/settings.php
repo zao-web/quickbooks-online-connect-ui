@@ -100,7 +100,7 @@ class Zao_QBO_API_Settings {
 		add_action( 'all_admin_notices', array( $this, 'output_notices' ) );
 		add_action( "cmb2_save_options-page_fields_{$this->metabox_id}", array( $this, 'settings_notices' ), 10, 2 );
 
-		if ( isset( $_GET['reset_all'] ) ) {
+		if ( isset( $_GET['qb_reset_all'] ) && wp_verify_nonce( $_GET['qb_reset_all'], 'qb_reset_all' ) ) {
  			$this->delete_all_and_redirect();
 		}
 
@@ -423,7 +423,7 @@ class Zao_QBO_API_Settings {
 	 */
 	public function check_api() {
 		// Setup reauth if requested.
-		if ( isset( $_GET['re-auth'] ) && wp_verify_nonce( $_GET['re-auth'], 'reauth' ) ) {
+		if ( isset( $_GET['qb_reauth'] ) && wp_verify_nonce( $_GET['qb_reauth'], 'qb_reauth' ) ) {
 			return $this->reauth_and_redirect();
 		}
 
@@ -792,16 +792,16 @@ class Zao_QBO_API_Settings {
 	 * @since  0.2.0
 	 */
 	public function reset_url() {
-		return wp_nonce_url( $this->settings_url(), 'reset_all', 'reset_all' );
+		return wp_nonce_url( $this->settings_url(), 'qb_reset_all', 'qb_reset_all' );
 	}
 
 	/**
-	 * This settings page's URL with a re-auth query arg
+	 * This settings page's URL with a qb_reauth query arg
 	 *
 	 * @since  0.2.0
 	 */
 	public function reauth_url() {
-		return wp_nonce_url( $this->settings_url(), 'reauth', 're-auth' );
+		return wp_nonce_url( $this->settings_url(), 'qb_reauth', 'qb_reauth' );
 	}
 
 	/**
