@@ -25,8 +25,8 @@ To avoid step 2, [download this zip](https://raw.githubusercontent.com/zao-web/q
 
 ## Screenshots
 
-1. Settings Page - Waiting for Client ID/Key for connection
-![Settings Page - Waiting for Client ID/Key for connection](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/waiting-for-connection.png)
+1. Settings Page - Waiting for Client ID/Secret for connection
+![Settings Page - Waiting for Client ID/Secret for connection](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/waiting-for-connection.png)
 
 2. After settings are saved, OAuth authorization begins with the QuickBooks server.
 ![After settings are saved, OAuth authorization begins with the QuickBooks server.](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/authorizing.png)
