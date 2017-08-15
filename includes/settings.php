@@ -118,7 +118,7 @@ class Zao_QBO_API_Settings {
 	 * @return void
 	 */
 	public function add_settings_page() {
-		$this->page_hook = add_menu_page(
+		$this->page_hook = add_options_page(
 			$this->title,
 			__( 'QB Online Connect', 'qbo-connect-ui' ),
 			'manage_options',
@@ -129,7 +129,7 @@ class Zao_QBO_API_Settings {
 		add_action( "admin_print_styles-{$this->page_hook}", array( __CLASS__, 'enqueue_resources' ) );
 	}
 
-	public function enqueue_resources() {
+	public static function enqueue_resources() {
 		wp_enqueue_style(
 			'qbo-connect-ui',
 			Zao_QBO_API_Connect_UI::url( 'assets/css/style.css' ),
@@ -783,7 +783,7 @@ class Zao_QBO_API_Settings {
 	 */
 	public function settings_url( $args = array() ) {
 		$args['page'] = $this->key;
-		return esc_url_raw( add_query_arg( $args, admin_url( 'admin.php' ) ) );
+		return esc_url_raw( add_query_arg( $args, admin_url( 'options-general.php' ) ) );
 	}
 
 	/**

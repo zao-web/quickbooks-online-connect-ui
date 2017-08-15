@@ -8,13 +8,13 @@
 **License:**           GPLv2  
 **License URI:**       http://www.gnu.org/licenses/gpl-2.0.html  
 
-## Description ##
+## Description
 
 Provides UI for connecting to Quickbooks Online over OAuth. This plugin is a UI wrapper for [Quickbooks Online Connect](https://github.com/zao-web/qbo-connect).
 
-## Installation ##
+## Installation
 
-### Manual Installation ###
+### Manual Installation
 
 1. Upload the entire `/qbo-connect-ui` directory to the `/wp-content/plugins/` directory.
 2. Run `composer install` inside the `/wp-content/plugins/qbo-connect-ui` directory.
@@ -23,4 +23,16 @@ Provides UI for connecting to Quickbooks Online over OAuth. This plugin is a UI 
 
 To avoid step 2, [download this zip](https://raw.githubusercontent.com/zao-web/qbo-connect-UI/master/qbo-connect-ui.zip), unzip the file and follow steps 1, 3, and 4.
 
-## Frequently Asked Questions ##
+## Screenshots
+
+1. Settings Page - Waiting for Client ID/Key for connection
+![Settings Page - Waiting for Client ID/Key for connection](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/waiting-for-connection.png)
+
+2. After settings are saved, OAuth authorization begins with the QuickBooks server.
+![After settings are saved, OAuth authorization begins with the QuickBooks server.](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/authorizing.png)
+
+3. Settings page after successful authentication
+![Settings page after successful authentication](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/connected.png)
+
+4. Clicking "Check API Connection" fetches your QuickBooks company information to demonstrate a successful connection
+![Clicking "Check API Connection" fetches your QuickBooks company information to demonstrate a successful connection](https://raw.githubusercontent.com/zao-web/quickbooks-online-connect-ui/master/check-api-connection.png)
