@@ -99,6 +99,9 @@ class Zao_QBO_API_Settings {
 
 		add_action( 'all_admin_notices', array( $this, 'output_notices' ) );
 		add_action( "cmb2_save_options-page_fields_{$this->metabox_id}", array( $this, 'settings_notices' ), 10, 2 );
+		add_action( 'qbo_connect_ui_settings_output', array( $this, 'settings_title_output' ) );
+		add_action( 'qbo_connect_ui_settings_output', array( $this, 'form_output' ) );
+		add_action( 'qbo_connect_ui_settings_after_wrap', array( $this, 'connection_status_output' ) );
 
 		if ( isset( $_GET['qb_reset_all'] ) && wp_verify_nonce( $_GET['qb_reset_all'], 'qb_reset_all' ) ) {
  			$this->delete_all_and_redirect();
@@ -164,46 +167,27 @@ class Zao_QBO_API_Settings {
 	 * @return void
 	 */
 	public function admin_page_display() {
-		$connected = $this->api()->connected();
 		?>
 		<div class="wrap cmb2-options-page qb-connect-settings-page <?php echo $this->key; ?>">
-			<h2><?php echo esc_html( get_admin_page_title() ); ?></h2>
-			<?php echo $this->get_form_output( $connected ); ?>
+			<?php do_action( 'qbo_connect_ui_settings_output', $this ); ?>
 		</div>
-
-		<?php if ( $connected ) :
-			$creds     = $this->api()->get_option( 'token_credentials' );
-			$auth_urls = $this->api()->auth_urls;
-			?>
-			<br>
-			<h3 class="qp-connected-title">Connected!</h3>
-			<hr>
-			<div class="extra-detail">
-				<h3>OAuth endpoints</h3>
-				<dl>
-					<dt>Authorize Endpoint</dt>
-					<dd><code><?php echo esc_attr( $auth_urls->authorization_endpoint ); ?></code></dd>
-					<dt>Access Token Endpoint</dt>
-					<dd><code><?php echo esc_attr( $auth_urls->token_endpoint ); ?></code></dd>
-				</dl>
-				<h3>OAuth credentials</h3>
-				<dl>
-					<dt>Client ID</dt>
-					<dd><code><?php echo esc_attr( $this->api()->client_key ); ?></code></dd>
-					<dt>Client Secret</dt>
-					<dd><code><?php echo esc_attr( $this->api()->client_secret ); ?></code></dd>
-					<dt>Access Token</dt>
-					<dd><code><?php echo esc_attr( $creds->access_token ); ?></code></dd>
-					<dt>Refresh Token</dt>
-					<dd><code><?php echo esc_attr( $creds->refresh_token ); ?></code></dd>
-					<dt>Expires In</dt>
-					<dd><code><?php echo esc_attr( $creds->expires_in ); ?></code></dd>
-				</dl>
-			</div>
-		<?php endif;
+		<?php do_action( 'qbo_connect_ui_settings_after_wrap', $this );
 	}
 
-	public function get_form_output( $connected ) {
+	public function settings_title_output() {
+		echo $this->get_settings_title_output();
+	}
+
+	public function get_settings_title_output() {
+		return '<h2>' . esc_html( get_admin_page_title() ) . '</h2>';
+	}
+
+	public function form_output() {
+		echo $this->get_form_output();
+	}
+
+	public function get_form_output() {
+		$connected = $this->api()->connected();
 		$connect_button = '';
 		$button_class = 'button-primary';
 
@@ -246,6 +230,42 @@ class Zao_QBO_API_Settings {
 		}
 
 		return $form_output;
+	}
+
+	public function connection_status_output() {
+		if ( ! $this->api()->connected() ) {
+			return;
+		}
+
+		$creds     = $this->api()->get_option( 'token_credentials' );
+		$auth_urls = $this->api()->auth_urls;
+		?>
+		<br>
+		<h3 class="qp-connected-title"><?php _e( 'Connected', 'qbo-connect-ui' ); ?>!</h3>
+		<hr>
+		<div class="extra-detail">
+			<h3><?php _e( 'OAuth endpoints', 'qbo-connect-ui' ); ?></h3>
+			<dl>
+				<dt><?php _e( 'Authorize Endpoint', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $auth_urls->authorization_endpoint ); ?></code></dd>
+				<dt><?php _e( 'Access Token Endpoint', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $auth_urls->token_endpoint ); ?></code></dd>
+			</dl>
+			<h3><?php _e( 'OAuth credentials', 'qbo-connect-ui' ); ?></h3>
+			<dl>
+				<dt><?php _e( 'Client ID', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $this->api()->client_key ); ?></code></dd>
+				<dt><?php _e( 'Client Secret', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $this->api()->client_secret ); ?></code></dd>
+				<dt><?php _e( 'Access Token', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $creds->access_token ); ?></code></dd>
+				<dt><?php _e( 'Refresh Token', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $creds->refresh_token ); ?></code></dd>
+				<dt><?php _e( 'Expires In', 'qbo-connect-ui' ); ?></dt>
+				<dd><code><?php echo esc_attr( $creds->expires_in ); ?></code></dd>
+			</dl>
+		</div>
+		<?php
 	}
 
 	/**
