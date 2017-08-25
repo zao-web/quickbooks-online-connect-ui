@@ -207,7 +207,7 @@ class Zao_QBO_API_Settings {
 				),
 			) );
 
-			if ( $this->get( 'consumer_key' ) ) {
+			if ( $this->get( 'client_id' ) ) {
 				$connect_url = $this->api()->get_full_authorization_url();
 				if ( ! is_wp_error( $connect_url ) ) {
 					$connect_button = '{{CONNECTBUTTON}}';
@@ -254,7 +254,7 @@ class Zao_QBO_API_Settings {
 			<h3><?php _e( 'OAuth credentials', 'qbo-connect-ui' ); ?></h3>
 			<dl>
 				<dt><?php _e( 'Client ID', 'qbo-connect-ui' ); ?></dt>
-				<dd><code><?php echo esc_attr( $this->api()->client_key ); ?></code></dd>
+				<dd><code><?php echo esc_attr( $this->api()->client_id ); ?></code></dd>
 				<dt><?php _e( 'Client Secret', 'qbo-connect-ui' ); ?></dt>
 				<dd><code><?php echo esc_attr( $this->api()->client_secret ); ?></code></dd>
 				<dt><?php _e( 'Access Token', 'qbo-connect-ui' ); ?></dt>
@@ -275,7 +275,7 @@ class Zao_QBO_API_Settings {
 	 * @return void
 	 */
 	public function register_settings_page_metabox() {
-		if ( $this->get( 'consumer_key' ) || $this->get( 'consumer_secret' ) ) {
+		if ( $this->get( 'client_id' ) || $this->get( 'client_secret' ) ) {
 			// Add a "reset" button next to the "save" button.
 			add_filter( 'cmb2_get_metabox_form_format', array( $this, 'add_reset_connection_button' ), 10, 2 );
 		}
@@ -316,7 +316,7 @@ class Zao_QBO_API_Settings {
 
 		$cmb->add_field( array(
 			'name'       => __( 'Client ID', 'qbo-connect-ui' ),
-			'id'         => 'consumer_key',
+			'id'         => 'client_id',
 			'type'       => 'text',
 			'attributes' => array(
 				'required' => 'required',
@@ -329,7 +329,7 @@ class Zao_QBO_API_Settings {
 
 		$cmb->add_field( array(
 			'name' => __( 'Client Secret', 'qbo-connect-ui' ),
-			'id'   => 'consumer_secret',
+			'id'   => 'client_secret',
 			'type' => 'text',
 			'attributes' => array(
 				'required' => 'required',
@@ -379,9 +379,9 @@ class Zao_QBO_API_Settings {
 	 * @since  0.1.0
 	 */
 	public function process_fields() {
-		$presave_key = $this->get( 'consumer_key' );
+		$presave_id = $this->get( 'client_id' );
 
-		if ( empty( $_POST['consumer_key'] ) ) {
+		if ( empty( $_POST['client_id'] ) ) {
 			$this->api()->delete_option();
 		}
 
@@ -390,7 +390,7 @@ class Zao_QBO_API_Settings {
 		$cmb->save_fields( $this->key, $cmb->object_type( 'options-page' ), $_POST );
 
 		// If we' don't have the right stuff, we need to redirect to get authorization
-		if ( empty( $presave_key ) && ! empty( $_POST['consumer_key'] ) ) {
+		if ( empty( $presave_id ) && ! empty( $_POST['client_id'] ) ) {
 			$this->api()->redirect_to_login();
 		}
 
@@ -489,7 +489,7 @@ class Zao_QBO_API_Settings {
 			return;
 		}
 
-		if ( $this->get( 'consumer_key' ) ) {
+		if ( $this->get( 'client_id' ) ) {
 			// Add a "check credentials" button next to the "save" button.
 			add_filter( 'cmb2_get_metabox_form_format', array( $this, 'add_check_connection_button' ), 10, 2 );
 		}
@@ -601,7 +601,6 @@ class Zao_QBO_API_Settings {
 		$message = '
 		<h4>'. $errors['message'] .'</h4>
 		<xmp>request args: '. print_r( $errors['request_args'], true ) .'</xmp>
-		<xmp>request response: '. print_r( $errors['request_response'], true ) .'</xmp>
 		<p><a class="button-secondary" href="'. add_query_arg( 'dismiss_errrors', 1 ) .'">' . __( 'Dismiss Errors', 'qbo-connect-ui' ) . '</a></p>
 		';
 		$this->register_notice( $message );
@@ -885,7 +884,7 @@ class Zao_QBO_API_Settings {
 	 * @return Zao\QBO_API\Connect
 	 */
 	public function api() {
-		if ( $this->api->initiated && $this->api->client_key ) {
+		if ( $this->api->initiated && $this->api->client_id ) {
 			// Has already been initated
 			return $this->api;
 		}
@@ -898,8 +897,8 @@ class Zao_QBO_API_Settings {
 			return $this->api;
 		}
 
-		$args['client_key']    = $this->get( 'consumer_key' );
-		$args['client_secret'] = $this->get( 'consumer_secret' );
+		$args['client_id']     = $this->get( 'client_id' );
+		$args['client_secret'] = $this->get( 'client_secret' );
 		$args['sandbox']       = !! $this->get( 'sandbox' );
 		$args['callback_uri']  = $this->settings_url();
 		$args['autoredirect_authoriziation']  = false;

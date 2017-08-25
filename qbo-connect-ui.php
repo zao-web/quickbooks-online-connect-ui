@@ -340,10 +340,8 @@ add_action( 'plugins_loaded', array( qbo_connect_ui(), 'hooks' ) );
  *    'url'
  *    'endpoint'
  *    'api_url'
- *    'client_key'
+ *    'client_id'
  *    'client_secret'
- *    'header_key'
- *    'header_token'
  *
  * @since  0.1.0
  *
