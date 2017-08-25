@@ -59,8 +59,8 @@ function qp_api_get_company_info( $data_service ) {
 	<table class="wp-list-table widefat">
 		<thead>
 			<tr>
-				<th>' . __( 'Connected Company Name', 'qbo-connect-ui' ) . '</th>
-				<th>' . __( 'Connected Company ID', 'qbo-connect-ui' ) . '</th>
+				<th>Connected Company Name</th>
+				<th>Connected Company ID</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -74,8 +74,8 @@ function qp_api_get_company_info( $data_service ) {
 	<table class="wp-list-table widefat">
 		<thead>
 			<tr>
-				<th>'. __( 'Company Property:', 'qbo-connect-ui' ) .'</th>
-				<th>'. __( 'Company Property Value:', 'qbo-connect-ui' ) .'</th>
+				<th>Company Property:</th>
+				<th>Company Property Value:</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -102,9 +102,15 @@ function qp_api_query_customer( $data_service, $company_name_to_search ) {
 	$message = '<h2>Query Customer: ' . $company_name_to_search . '</h2>';
 
 	if ( $error ) {
-		$message .= "<p>The Status code is: " . $error->getHttpStatusCode() . "\n</p>";
-		$message .= "<p>The Helper message is: " . $error->getOAuthHelperError() . "\n</p>";
-		$message .= "<p>The Response message is: " . $error->getResponseBody() . "\n</p>";
+		$message .= '<p>The Status code is: ' . $error->getHttpStatusCode() . '</p>';
+		$message .= '<p>The Helper message is: ' . $error->getOAuthHelperError() . '</p>';
+		$message .= '<p>The Response message is: ' . $error->getResponseBody() . '</p>';
+
+		$message .= '<p>Intuit Error Type: ' . $error->getIntuitErrorType() . '</p>';
+		$message .= '<p>Intuit Error Code: ' . $error->getIntuitErrorCode() . '</p>';
+		$message .= '<p>Intuit Error Message: ' . $error->getIntuitErrorMessage() . '</p>';
+		$message .= '<p>Intuit Error Detail: ' . $error->getIntuitErrorDetail() . '</p>';
+
 	} else {
 		$message = print_r( $customers, true );
 	}
