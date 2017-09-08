@@ -348,7 +348,11 @@ class Zao_QBO_API_Settings {
 
 	public function checked_by_default() {
 		$all = $this->get( 'all' );
-		return isset( $all['sandbox'] ) ? empty( $all['sandbox'] ) : true;
+		if ( empty( $all ) ) {
+			return true;
+		}
+
+		return ! empty( $all['sandbox'] );
 	}
 
 	/**
