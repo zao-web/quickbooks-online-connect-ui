@@ -4,7 +4,7 @@ Donate link:       http://zao.is
 Tags:
 Requires at least: 4.7.0
 Tested up to:      4.7.3
-Stable tag:        0.2.6
+Stable tag:        0.2.7
 License:           GPLv2
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 

@@ -2,7 +2,7 @@
 # This file is distributed under the GPLv2.
 msgid ""
 msgstr ""
-"Project-Id-Version: Quickbooks Online Connect UI 0.2.6\n"
+"Project-Id-Version: Quickbooks Online Connect UI 0.2.7\n"
 "Report-Msgid-Bugs-To: "
 "https://wordpress.org/support/plugin/qbo-connect-ui\n"
 "POT-Creation-Date: 2017-03-09 19:23:39+00:00\n"

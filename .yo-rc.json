@@ -3,7 +3,7 @@
     "name": "Quickbooks Online Connect UI",
     "homepage": "http://zao.is",
     "description": "Provides UI for connecting to Quickbooks Online over OAuth.",
-    "version": "0.1.0",
+    "version": "0.2.7",
     "author": "Zao",
     "authoremail": "contact@zao.is",
     "authorurl": "http://zao.is",

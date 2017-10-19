@@ -469,7 +469,7 @@ class Zao_QBO_API_Settings {
 	 */
 	public function check_api() {
 		// Setup reauth if requested.
-		if ( isset( $_GET['qb_reauth'] ) && wp_verify_nonce( $_GET['qb_reauth'], 'qb_reauth' ) ) {
+		if ( isset( $_GET['qb_reset_all_first']  ) && self::requesting_reauth() ) {
 			return $this->reauth_and_redirect();
 		}
 
@@ -497,6 +497,17 @@ class Zao_QBO_API_Settings {
 			// Add a "check credentials" button next to the "save" button.
 			add_filter( 'cmb2_get_metabox_form_format', array( $this, 'add_check_connection_button' ), 10, 2 );
 		}
+	}
+
+	/**
+	 * Whether requesting a reauthorization.
+	 *
+	 * @since  0.2.7
+	 *
+	 * @return bool
+	 */
+	public static function requesting_reauth() {
+		return isset( $_GET['qb_reauth'] ) && wp_verify_nonce( $_GET['qb_reauth'], 'qb_reauth' );
 	}
 
 	/**
@@ -655,7 +666,7 @@ class Zao_QBO_API_Settings {
 			</tbody>
 		</table>
 		<br>
-		<p><a class="button-secondary" href="'. $this->settings_url() .'">' . __( 'Dismiss', 'qbo-connect-ui' ) . '</a>&nbsp;&nbsp;<a class="button-secondary" href="'. $this->reauth_url() .'">' . __( 'Re-authenticate', 'qbo-connect-ui' ) . '</a></p>
+		<p><a class="button-secondary" href="'. $this->settings_url() .'">' . __( 'Dismiss', 'qbo-connect-ui' ) . '</a>&nbsp;&nbsp;<a class="button-secondary" href="'. $this->reauth_url() .'">' . __( 'Re-authenticate Connection', 'qbo-connect-ui' ) . '</a></p>
 		';
 
 		$this->register_notice( $message, false );
@@ -724,7 +735,9 @@ class Zao_QBO_API_Settings {
 		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
 
 		$check_button = '<a class="qb-action-link" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a>';
-		$check_button .= '' . $this->get_refresh_token_button() . '</p></form>';
+		$check_button .= $this->get_refresh_token_button();
+		$check_button .= $this->get_reauth_button();
+		$check_button .= '</p></form>';
 
 		$format = str_replace(
 			'</p></form>',
@@ -748,6 +761,18 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
+	 * Add a "reauth" button next to the "check credentials" button.
+	 *
+	 * @since  0.2.7
+	 * @return string
+	 */
+	public function get_reauth_button() {
+		$reauth_url = str_replace( '%', '%%', esc_url( $this->reauth_url() ) );
+
+		return '<a class="qb-action-link" href="'. $reauth_url .'">' . __( 'Re-authenticate Connection', 'qbo-connect-ui' ) . '</a>';
+	}
+
+	/**
 	 * Add a "reset" button next to the "save" button.
 	 *
 	 * @since 0.1.0
@@ -760,9 +785,10 @@ class Zao_QBO_API_Settings {
 			return $format;
 		}
 
-		$reset_url = str_replace( '%', '%%', esc_url( $this->reset_url() ) );
+		$reset_url    = str_replace( '%', '%%', esc_url( $this->reset_url() ) );
+		$reset_button = '<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'qbo-connect-ui' ) . '</a>';
+		$reset_button .= '</p></form>';
 
-		$reset_button = '<a class="button-secondary" href="'. $reset_url .'">' . __( 'Reset All Settings', 'qbo-connect-ui' ) . '</a></p></form>';
 		// Add a check-api button to the form
 		$format = str_replace(
 			'</p></form>',
@@ -844,9 +870,18 @@ class Zao_QBO_API_Settings {
 	 * This settings page's URL with a qb_reauth query arg
 	 *
 	 * @since  0.2.0
+	 *
+	 * @param  bool $reset Whether to reset settings first.
+	 *
+	 * @return string
 	 */
-	public function reauth_url() {
-		return wp_nonce_url( $this->settings_url(), 'qb_reauth', 'qb_reauth' );
+	public function reauth_url( $reset = false ) {
+		$url = wp_nonce_url( $this->settings_url(), 'qb_reauth', 'qb_reauth' );
+		if ( $reset ) {
+			$url = add_query_arg( 'qb_reset_all_first', true, $url );
+		}
+
+		return $url;
 	}
 
 	/**
@@ -906,6 +941,10 @@ class Zao_QBO_API_Settings {
 		$args['sandbox']       = !! $this->get( 'sandbox' );
 		$args['callback_uri']  = $this->settings_url();
 		$args['autoredirect_authoriziation']  = false;
+
+		if ( ! isset( $_GET['qb_reset_all_first']  ) && self::requesting_reauth() ) {
+			$args['reauthorize_connection'] = true;
+		}
 
 		// Initate the API.
 		$this->api->init( $args );
