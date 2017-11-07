@@ -187,7 +187,7 @@ class Zao_QBO_API_Settings {
 	}
 
 	public function get_form_output() {
-		$connected = $this->api()->connected();
+		$connected = $this->api()->token_acquired();
 		$connect_button = '';
 		$button_class = 'button-primary';
 
@@ -233,7 +233,7 @@ class Zao_QBO_API_Settings {
 	}
 
 	public function connection_status_output() {
-		if ( ! $this->api()->connected() ) {
+		if ( ! $this->api()->token_acquired() ) {
 			return;
 		}
 
@@ -241,7 +241,7 @@ class Zao_QBO_API_Settings {
 		$auth_urls = $this->api()->auth_urls;
 		?>
 		<br>
-		<h3 class="qp-connected-title"><?php _e( 'Connected', 'qbo-connect-ui' ); ?>!</h3>
+		<h3 class="qp-connected-title"><?php _e( 'Tokens Acquired:', 'qbo-connect-ui' ); ?></h3>
 		<hr>
 		<div class="extra-detail">
 			<h3><?php _e( 'OAuth endpoints', 'qbo-connect-ui' ); ?></h3>
@@ -323,7 +323,7 @@ class Zao_QBO_API_Settings {
 			),
 		) );
 
-		$after_row = ! $this->api()->connected()
+		$after_row = ! $this->api()->token_acquired()
 			? '<div class="cmb-row cmb-type-title qb-clipboard-redirect-uri-helper"><p>' . __( '<strong>NOTE:</strong> The Redirect URI for the Intuit app registration needs to be the following: ', 'qbo-connect-ui' ) . '</p><p></p><p><input id="clipboard-redirect-uri" type="text" class="large-text" disabled readonly value="' . $this->settings_url() . '"/></p></div>'
 			: '';
 
@@ -566,7 +566,7 @@ class Zao_QBO_API_Settings {
 	 * @return bool  Whether API conneciton is successful.
 	 */
 	public function verify_api_connection_successful() {
-		if ( ! $this->api()->connected() ) {
+		if ( ! $this->api()->token_acquired() ) {
 			$this->api()->redirect_to_login();
 		}
 
@@ -728,7 +728,7 @@ class Zao_QBO_API_Settings {
 	 * @param string  $object_id CMB2 object ID
 	 */
 	public function add_check_connection_button( $format, $object_id ) {
-		if ( $object_id != $this->key || ! $this->api()->connected() ) {
+		if ( $object_id != $this->key || ! $this->api()->token_acquired() ) {
 			return $format;
 		}
 
