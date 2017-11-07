@@ -242,6 +242,7 @@ class Zao_QBO_API_Settings {
 		?>
 		<br>
 		<h3 class="qp-connected-title"><?php _e( 'Tokens Acquired:', 'qbo-connect-ui' ); ?></h3>
+		<p class="description"><?php printf( __( '%s to ensure the tokens allow a proper connection.', 'qbo-connect-ui' ), $this->check_connection_button() ); ?></p>
 		<hr>
 		<div class="extra-detail">
 			<h3><?php _e( 'OAuth endpoints', 'qbo-connect-ui' ); ?></h3>
@@ -720,7 +721,7 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
-	 * Add a "check credentials" button next to the "save" button.
+	 * Add a "Check API Connection" button next to the "save" button.
 	 *
 	 * @since 0.1.0
 	 *
@@ -732,9 +733,7 @@ class Zao_QBO_API_Settings {
 			return $format;
 		}
 
-		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
-
-		$check_button = '<a class="qb-action-link" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a>';
+		$check_button = $this->check_connection_button();
 		$check_button .= $this->get_refresh_token_button();
 		$check_button .= $this->get_reauth_button();
 		$check_button .= '</p></form>';
@@ -749,7 +748,19 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
-	 * Add a "refresh token" button next to the "check credentials" button.
+	 * Adds a "Check API Connection" button.
+	 *
+	 * @since 0.2.8
+	 * @return string
+	 */
+	public function check_connection_button() {
+		$url = str_replace( '%', '%%', esc_url( add_query_arg( 'check_credentials', 1 ) ) );
+
+		return '<a class="qb-action-link" href="'. $url .'">' . __( 'Check API Connection', 'qbo-connect-ui' ) . '</a>';
+	}
+
+	/**
+	 * Add a "refresh token" button next to the "Refresh Authentication Token" button.
 	 *
 	 * @since  0.1.0
 	 * @return string
@@ -761,7 +772,7 @@ class Zao_QBO_API_Settings {
 	}
 
 	/**
-	 * Add a "reauth" button next to the "check credentials" button.
+	 * Add a "reauth" button next to the "Re-authenticate Connection" button.
 	 *
 	 * @since  0.2.7
 	 * @return string

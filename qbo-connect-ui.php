@@ -3,7 +3,7 @@
  * Plugin Name: Quickbooks Online Connect UI
  * Plugin URI:  http://zao.is
  * Description: Provides UI for connecting to Quickbooks Online over OAuth.
- * Version:     0.2.7
+ * Version:     0.2.8
  * Author:      Zao
  * Author URI:  http://zao.is
  * Donate link: http://zao.is
@@ -60,7 +60,7 @@ class Zao_QBO_API_Connect_UI {
 	 * @var  string
 	 * @since  0.1.0
 	 */
-	const VERSION = '0.2.7';
+	const VERSION = '0.2.8';
 
 	/**
 	 * Plugin basename
