@@ -20,7 +20,7 @@
     "require": {
         "php": ">5.3",
         "zao-web/qbo-connect": "v0.1.3",
-        "webdevstudios/cmb2": "dev-master"
+        "cmb2/cmb2": "dev-master"
     },
     "autoload": {
         "classmap": ["includes"]

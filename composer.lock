@@ -4,21 +4,77 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "9c0748b7b64eaddef51ffbac9435af1d",
-    "content-hash": "e58065f7aca9ef32d5f8504503760dd7",
+    "content-hash": "8a0e9a38dc38d87572c5ddfff0cf9c94",
     "packages": [
         {
-            "name": "quickbooks/v3-php-sdk",
-            "version": "v3.3.0",
+            "name": "cmb2/cmb2",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/intuit/QuickBooks-V3-PHP-SDK.git",
-                "reference": "10fd3a5079d0c901697e2a72e3af219971eece94"
+                "url": "https://github.com/CMB2/CMB2.git",
+                "reference": "853d48d2f52371ac927ea6302d4e04668f1067b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/intuit/QuickBooks-V3-PHP-SDK/zipball/10fd3a5079d0c901697e2a72e3af219971eece94",
-                "reference": "10fd3a5079d0c901697e2a72e3af219971eece94",
+                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/853d48d2f52371ac927ea6302d4e04668f1067b3",
+                "reference": "853d48d2f52371ac927ea6302d4e04668f1067b3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">5.2.4"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "3.7.*"
+            },
+            "suggest": {
+                "composer/installers": "~1.0"
+            },
+            "type": "wordpress-plugin",
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "GPL-2.0-or-later"
+            ],
+            "authors": [
+                {
+                    "name": "WebDevStudios",
+                    "email": "contact@webdevstudios.com",
+                    "homepage": "https://github.com/WebDevStudios",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Justin Sternberg",
+                    "email": "justin@dsgnwrks.pro",
+                    "homepage": "https://dsgnwrks.pro",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Zao",
+                    "email": "office@zao.com",
+                    "homepage": "http://zao.is",
+                    "role": "Developer"
+                }
+            ],
+            "description": "CMB2 is a metabox, custom fields, and forms library for WordPress that will blow your mind.",
+            "homepage": "https://github.com/CMB2/CMB2",
+            "keywords": [
+                "metabox",
+                "plugin",
+                "wordpress"
+            ],
+            "time": "2018-05-29T14:42:34+00:00"
+        },
+        {
+            "name": "quickbooks/v3-php-sdk",
+            "version": "V3.4.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/intuit/QuickBooks-V3-PHP-SDK.git",
+                "reference": "ae806ee2f05b3cc083e0bf8783acf50fc91aa195"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/intuit/QuickBooks-V3-PHP-SDK/zipball/ae806ee2f05b3cc083e0bf8783acf50fc91aa195",
+                "reference": "ae806ee2f05b3cc083e0bf8783acf50fc91aa195",
                 "shasum": ""
             },
             "require": {
@@ -52,77 +108,20 @@
                 "rest",
                 "smallbusiness"
             ],
-            "time": "2017-07-20 23:32:36"
-        },
-        {
-            "name": "webdevstudios/cmb2",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/CMB2/CMB2.git",
-                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/CMB2/CMB2/zipball/d9d23e090fb2ae93883035c04796836f7e3c5a19",
-                "reference": "d9d23e090fb2ae93883035c04796836f7e3c5a19",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">5.2.4"
-            },
-            "require-dev": {
-                "phpunit/phpunit": "3.7.*"
-            },
-            "suggest": {
-                "composer/installers": "~1.0"
-            },
-            "type": "wordpress-plugin",
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "GPL-2.0+"
-            ],
-            "authors": [
-                {
-                    "name": "WebDevStudios",
-                    "email": "contact@webdevstudios.com",
-                    "homepage": "https://github.com/WebDevStudios",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Justin Sternberg",
-                    "email": "justin@dsgnwrks.pro",
-                    "homepage": "https://dsgnwrks.pro",
-                    "role": "Developer"
-                },
-                {
-                    "name": "Zao",
-                    "email": "office@zao.com",
-                    "homepage": "http://zao.is",
-                    "role": "Developer"
-                }
-            ],
-            "description": "CMB2 is a metabox, custom fields, and forms library for WordPress that will blow your mind.",
-            "homepage": "https://github.com/CMB2/CMB2",
-            "keywords": [
-                "metabox",
-                "plugin",
-                "wordpress"
-            ],
-            "time": "2017-08-08 14:50:22"
+            "time": "2017-08-17T00:12:55+00:00"
         },
         {
             "name": "zao-web/qbo-connect",
-            "version": "dev-master",
+            "version": "v0.1.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/zao-web/quickbooks-online-connect.git",
-                "reference": "5af17046a5589101d97ffa3d4ee68ebb9fe2e1f3"
+                "reference": "b5bdedf6e6904d4482f674493152c27ee90df6b6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/5af17046a5589101d97ffa3d4ee68ebb9fe2e1f3",
-                "reference": "5af17046a5589101d97ffa3d4ee68ebb9fe2e1f3",
+                "url": "https://api.github.com/repos/zao-web/quickbooks-online-connect/zipball/b5bdedf6e6904d4482f674493152c27ee90df6b6",
+                "reference": "b5bdedf6e6904d4482f674493152c27ee90df6b6",
                 "shasum": ""
             },
             "require": {
@@ -154,15 +153,14 @@
                 "wordpress",
                 "wp-api"
             ],
-            "time": "2017-08-15 18:46:28"
+            "time": "2017-11-07T20:09:04+00:00"
         }
     ],
     "packages-dev": [],
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "zao-web/qbo-connect": 20,
-        "webdevstudios/cmb2": 20
+        "cmb2/cmb2": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
